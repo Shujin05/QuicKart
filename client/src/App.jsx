@@ -12,8 +12,7 @@ import {
 import Navbar from "./pages/Navbar"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
-import UserHome from "./pages/UserHome"
-import AdminHome from "./pages/AdminHome"
+import Home from "./pages/Home"
 import Products from "./pages/Products"
 import Transaction from "./pages/Transaction"
 import ManageUser from "./pages/ManageUser"
@@ -35,13 +34,9 @@ function App() {
       element: <Layout/>,
       children: [
         {
-          path: "/user",
-          element: <UserHome/>,
+          path: "/",
+          element: <Home/>,
         }, 
-        {
-          path: "/admin",
-          element: <AdminHome/>
-        },
         {
           path:"/products",
           element: <Products/>

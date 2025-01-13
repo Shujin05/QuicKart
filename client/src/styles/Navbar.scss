@@ -2,8 +2,9 @@
 
 .sidebar {
     margin: 0;
-    padding: 100px 24px 0px 24px;
-    width: 250px;
+    padding: 0;
+    padding-top: 100px;
+    width: 300px;
     background-color: constants.$primary-color;
     color: constants.$dark-color;
     position: fixed;
@@ -17,18 +18,18 @@
     padding: 16px 16px 16px 0px;
     text-decoration: none;
     border-bottom: 1px solid #457B9D;
-    margin-bottom: 16px;
+    margin: 0px 24px 16px 24px;
   }
   
   div.content {
-    margin-left: 250px;
+    margin-left: 300px;
     padding: 1px 16px;
     height: 100vh;
   }
 
   .sidebar-title {
-    margin: 0;
     margin-bottom: 40px;
+    margin-left: 24px;
   }
   
   @media screen and (max-width: 700px) {
@@ -36,14 +37,28 @@
       width: 100%;
       height: auto;
       position: relative;
+      padding: 0;
     }
-    .sidebar a {float: left;}
+    .sidebar a {
+      float: left;
+      padding: 16px 16px 8px 16px;
+      margin: 0px 8px 16px 8px;
+    }
     div.content {margin-left: 0;}
+    .sidebar-title {
+      margin-bottom: 0px;
+      margin-left: 8px;
+    }
   }
   
   @media screen and (max-width: 400px) {
     .sidebar a {
       text-align: center;
       float: none;
+    }
+
+    .sidebar-title {
+      text-align: center;
+      
     }
   }

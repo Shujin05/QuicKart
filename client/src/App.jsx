@@ -31,7 +31,6 @@ function App() {
           <div className="content">
             <Outlet/>
           </div>
-          
         </>
     )
   }

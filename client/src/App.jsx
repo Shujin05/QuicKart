@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+
 
 import {
   Outlet,
@@ -18,13 +18,21 @@ import Transaction from "./pages/Transaction"
 import ManageUser from "./pages/ManageUser"
 import Inventory from "./pages/Inventory"
 
+import './App.css'
+import "./styles/Login.scss"
+import "./styles/Navbar.scss"
+
+
 function App() {
   const Layout = () => {
     return(
-      <>
-        <Navbar/>
-        <Outlet/>
-      </>
+        <>
+          <Navbar/>
+          <div className="content">
+            <Outlet/>
+          </div>
+          
+        </>
     )
   }
 
@@ -52,16 +60,16 @@ function App() {
         {
           path: "/inventory",
           element: <Inventory/>
-        },
-        {
-          path: "/login", 
-          element: <Login/>
-        }, 
-        {
-          path: "/register", 
-          element: <Register/>
         }
       ]
+    }, 
+    {
+      path: "/login", 
+      element: <Login/>
+    }, 
+    {
+      path: "/register", 
+      element: <Register/>
     }
   ]);
 

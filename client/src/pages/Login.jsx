@@ -2,7 +2,10 @@ import {useState} from "react"
 
 const Login = () => {
     return (
-        <p>Login</p>
+        <div className="login-container">
+            <p>Login</p>
+        </div>
+        
     )
 }
 

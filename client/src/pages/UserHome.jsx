@@ -2,7 +2,10 @@ import {useState} from "react"
 
 const UserHome = () => {
     return (
-        <p>User Home</p>
+        <div className="d-flex justify-content-center align-items-center">
+            <p>User Home</p>
+        </div>
+        
     )
 }
 

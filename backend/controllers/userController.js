@@ -13,14 +13,14 @@ const loginUser = async (req, res) => {
             return res.json({success:false, message:"User doesn't exist"})
         }
 
+        if (user.suspended) {
+            return res.json({ success: false, message: "Your account is suspended. Contact admin for more details." });
+        }
+        
         const isMatch = await bcrypt.compare(password, user.password); 
 
         if (!isMatch) {
             return res.json({success:false, message:"Invalid credentials"})
-        }
-
-        if (user.suspended) {
-            return res.json({ success: false, message: "Your account is suspended. Contact admin for more details." });
         }
 
         const token = createToken(user._id); 
@@ -38,7 +38,7 @@ const createToken = (id) => {
 
 // register user
 const registerUser = async (req, res) => {
-    const {name, password, email} = req.body; 
+    const {name, email, password, confirm_password} = req.body; 
     try {
         // check if account already exists
         const exists = await userModel.findOne({email})
@@ -49,6 +49,10 @@ const registerUser = async (req, res) => {
         // validate email and password 
         if (!validator.isEmail(email)) {
             return res.json({success:false, message:"Please enter a valid email"})
+        }
+
+        if (confirm_password != password) {
+            return res.json({success:false, message:"Please ensure both passwords are the same"})
         }
 
         if (password.length < 8 ) {
@@ -117,66 +121,4 @@ const changePassword = async (req, res) => {
     }
 };
 
-// Admin reset password function - current password not required
-const resetPassword = async (req, res) => {
-    const { userEmail, newPassword } = req.body;
-
-    try {
-        // Find the user whose password needs to be reset
-        const user = await userModel.findOne({ email: userEmail });
-        if (!user) {
-            return res.json({ success: false, message: "User not found" });
-        }
-
-        // Validate new password
-        if (newPassword.length < 8) {
-            return res.json({ success: false, message: "Password length should be greater than 8" });
-        }
-
-        // Hash the new password
-        const salt = await bcrypt.genSalt(10);
-        const hashedNewPassword = await bcrypt.hash(newPassword, salt);
-
-        // Update user's password
-        user.password = hashedNewPassword;
-        await user.save();
-
-        res.json({ success: true, message: "Password reset successfully" });
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error resetting password" });
-    }
-};
-
-// Suspend user function
-const suspendUser = async (req, res) => {
-    const { userEmail } = req.body;
-
-    try {
-        // Find the user to be suspended
-        const user = await userModel.findOne({ email: userEmail });
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-
-        // Suspend the user account
-        user.suspended = true;
-        await user.save();
-
-        res.json({
-            success: true,
-            message: `User account for ${userEmail} has been suspended successfully`,
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: "An error occurred while suspending the user account",
-        });
-    }
-};
-
-export {loginUser, registerUser, changePassword, resetPassword, suspendUser}; 
+export {loginUser, registerUser, changePassword}; 

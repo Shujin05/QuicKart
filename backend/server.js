@@ -3,6 +3,8 @@ import cors from "cors"
 import { connectDB } from "./config/db.js"
 import 'dotenv/config'
 import userRouter from "./routes/userRoute.js"
+import itemRouter from "./routes/itemRoute.js"
+import adminRouter from "./routes/adminRoute.js"
 
 // app configuration 
 const app = express()
@@ -21,8 +23,8 @@ connectDB();
 
 // API endpoints
 app.use("/api/user", userRouter)
-
-
+app.use("/api/admin", adminRouter)
+app.use("/api/item", itemRouter)
 
 // run express server 
 app.listen(port, ()=>{

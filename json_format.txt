@@ -1,0 +1,56 @@
+// user register
+{
+  "name": "Lim Shu Jin",
+  "email": "shu.jin0731@gmail.com",
+  "password": "securePassword123",
+  "confirm_password": "securePassword123"
+}
+
+// user login
+{
+  "email": "shu.jin0731@gmail.com",
+  "password": "securePassword123"
+}
+
+// user change password 
+{
+  "email": "shu.jin0731@gmail.com",
+  "currentPassword": "securePassword123",
+  "newPassword": "newPassword123"
+}
+
+// admin register
+{
+  "name": "Lim Shu Jin",
+  "email": "shu.jin0731@gmail.com",
+  "password": "securePassword123"
+}
+
+// admin login
+{
+  "email": "shu.jin0731@gmail.com",
+  "password": "securePassword123"
+}
+
+// admin change password 
+{
+  "email": "shu.jin0731@gmail.com",
+  "currentPassword": "securePassword123",
+  "newPassword": "newPassword123"
+}
+
+// admin reset password 
+// header: admin token
+{
+  "userEmail": "shu.jin0731@gmail.com",
+  "newPassword": "newSecurePassword123"
+}
+
+// admin suspend user 
+// header: admin token
+{
+  "userEmail" : "shu.jin0731@gmail.com"
+}
+
+
+

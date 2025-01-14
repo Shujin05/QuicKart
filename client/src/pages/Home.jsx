@@ -4,7 +4,7 @@ import UserHome from "./UserHome"
 
 const Home = () => {
     // when login is setup this can be checked based on the cookies
-    const [isAdmin, setIsAdmin] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(true)
 
     return (
         <>

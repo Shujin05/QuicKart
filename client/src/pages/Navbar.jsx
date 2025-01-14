@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom"
 
 
 const Navbar = () => {
-    const [isAdmin, setIsAdmin] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(true)
 
     return (
         <div className="sidebar">

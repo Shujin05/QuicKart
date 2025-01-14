@@ -1,6 +1,7 @@
 import express from "express"
-import { addItem, listItem, removeItem } from "../controllers/itemController.js"
+import { addItem, listItem, updateItemQuantity } from "../controllers/itemController.js"
 import multer from "multer"
+import verifyAdmin from "../middleware/adminAuth.js";
 
 const itemRouter = express.Router(); 
 
@@ -30,8 +31,8 @@ const upload = multer({
 itemRouter.use("/uploads", express.static("uploads"));
 
 // define route 
-itemRouter.post("/add", upload.single("image"), addItem);
-itemRouter.get("/list", listItem);
-itemRouter.post("/remove", removeItem);
+itemRouter.get("/list" , listItem);
+itemRouter.post("/add", verifyAdmin, upload.single("image"), addItem);
+itemRouter.post("/updateQuantity", verifyAdmin, updateItemQuantity)
 
 export default itemRouter;

@@ -5,6 +5,8 @@ import 'dotenv/config'
 import userRouter from "./routes/userRoute.js"
 import itemRouter from "./routes/itemRoute.js"
 import adminRouter from "./routes/adminRoute.js"
+import logRouter from "./routes/logRoute.js"
+import orderRouter from "./routes/orderRoute.js"
 
 // app configuration 
 const app = express()
@@ -25,6 +27,8 @@ connectDB();
 app.use("/api/user", userRouter)
 app.use("/api/admin", adminRouter)
 app.use("/api/item", itemRouter)
+app.use("/api/item", logRouter)
+app.use("/api/order", orderRouter)
 
 // run express server 
 app.listen(port, ()=>{

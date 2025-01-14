@@ -35,7 +35,7 @@ const createToken = (id) => {
 
 // register admin
 const registerAdmin = async (req, res) => {
-    const {name, password, email} = req.body; 
+    const {name, password, email, confirmPassword} = req.body; 
     try {
         // check if account already exists
         const exists = await adminModel.findOne({email})
@@ -46,6 +46,10 @@ const registerAdmin = async (req, res) => {
         // validate email and password 
         if (!validator.isEmail(email)) {
             return res.json({success:false, message:"Please enter a valid email"})
+        }
+
+        if (confirmPassword != password) {
+            return res.json({success:false, message:"Please ensure both passwords are the same"})
         }
 
         if (password.length < 8 ) {
@@ -77,7 +81,7 @@ const registerAdmin = async (req, res) => {
 
 // Change admin password function
 const changePassword = async (req, res) => {
-    const { email, currentPassword, newPassword } = req.body;
+    const { email, currentPassword, newPassword, confirmPassword} = req.body;
 
     try {
         // Find user by email
@@ -92,6 +96,10 @@ const changePassword = async (req, res) => {
 
         if (!isMatch) {
             return res.json({ success: false, message: "Current password is incorrect" });
+        }
+
+        if (confirmPassword != newPassword) {
+            return res.json({success:false, message:"Please ensure both passwords are the same"})
         }
 
         // Validate new password
@@ -117,7 +125,7 @@ const changePassword = async (req, res) => {
 
 // Admin reset user password function - current password not required
 const resetPassword = async (req, res) => {
-    const { userEmail, newPassword } = req.body;
+    const { userEmail, newPassword, confirmPassword } = req.body;
 
     try {
         // Find the user whose password needs to be reset
@@ -129,6 +137,10 @@ const resetPassword = async (req, res) => {
         // Validate new password
         if (newPassword.length < 8) {
             return res.json({ success: false, message: "Password length should be greater than 8" });
+        }
+
+        if (confirmPassword != newPassword) {
+            return res.json({success:false, message:"Please ensure both passwords are the same"})
         }
 
         // Hash the new password

@@ -21,6 +21,7 @@ import Inventory from "./pages/Inventory"
 import './App.css'
 import "./styles/Login.scss"
 import "./styles/Navbar.scss"
+import "./styles/UserHome.scss"
 
 
 function App() {

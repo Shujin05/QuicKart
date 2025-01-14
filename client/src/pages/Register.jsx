@@ -41,7 +41,7 @@ const Register = () => {
                 </div>
                 <div className="footer">
                     <p className="error">{error} </p>
-                    <button onClick={handleSubmit}>Login</button>
+                    <button onClick={handleSubmit}>Register</button>
                     <p>Already have an account? <a href="/login"><u>Log in</u></a> here</p>
                 </div>
                 

@@ -1,0 +1,94 @@
+@use "constants";
+
+#row1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 8px 32px;
+}
+
+@media screen and (max-width: 1024px) {
+    #row1 {
+        grid-template-columns: 1fr;
+    }
+  }
+
+.user-home-container {
+    padding: 16px;
+    text-align: left;
+    color: constants.$dark-color;
+}
+
+.card {
+    border-radius: 8px;
+    background-color: constants.$primary-color;
+    padding: 16px 16px;
+    margin-bottom: 16px;
+
+    h3 {
+        margin: 0px;
+        margin-bottom: 16px;
+        padding: 0;
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        margin: 0;
+    }
+}
+
+.user-transaction-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 8px;
+
+    h3 {
+        margin: 0;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+.transaction-list {
+    grid-template-rows: repeat(auto-fill, 1fr);
+
+    .transaction-item {
+        border-bottom: 1px solid constants.$dark-color;
+        padding: 8px;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+
+        * {
+            display: flex;
+            align-items: center;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+.order-status {
+    border-radius: 16px;
+    padding: 4px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-status-approved {
+    background-color: rgb(10, 173, 10);
+}
+
+.order-status-pending {
+    background-color: yellow;
+}
+
+.order-status-rejected {
+    background-color: red;
+}

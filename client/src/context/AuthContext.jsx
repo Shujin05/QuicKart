@@ -1,6 +1,7 @@
 import {createContext, useEffect, useState} from "react";
 import axios from "axios";
 
+// to be updated, have no idea how jwt works
 export const AuthContext = createContext()
 
 export const AuthContextProvider = ({children}) => {
@@ -8,7 +9,7 @@ export const AuthContextProvider = ({children}) => {
 
     const login = async(inputs) => {
         const res = await axios.post("/api/user/login", inputs);
-        setCurrentUser(res.data)
+        localStorage.setItem("token", res.data.token);
     }
 
     const logout = async(inputs) => {
@@ -22,7 +23,7 @@ export const AuthContextProvider = ({children}) => {
     }
 
     useEffect(() => {
-        localStorage.setItem("user", JSON.stringify(currentUser))
+        //localStorage.setItem("token", JSON.stringify(currentUser))
     }, [currentUser])
 
     return <AuthContext.Provider value={{currentUser, login, logout}}>

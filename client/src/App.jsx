@@ -17,12 +17,14 @@ import Products from "./pages/Products"
 import Transaction from "./pages/Transaction"
 import ManageUser from "./pages/ManageUser"
 import Inventory from "./pages/Inventory"
+import AdminLogin from "./pages/AdminLogin"
 
 import './App.css'
 import "./styles/Login.scss"
 import "./styles/Navbar.scss"
 import "./styles/UserHome.scss"
 import "./styles/AdminHome.scss"
+import "./styles/Products.scss"
 
 
 function App() {
@@ -71,6 +73,10 @@ function App() {
     {
       path: "/register", 
       element: <Register/>
+    }, 
+    {
+      path: "/adminLogin",
+      element: <AdminLogin/>
     }
   ]);
 

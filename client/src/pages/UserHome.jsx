@@ -67,6 +67,7 @@ const UserHome = () => {
                 <ProductCard/>
                 <ProductCard/>
                 <ProductCard/>
+                <ProductCard/>
             </div>
         </div>
         

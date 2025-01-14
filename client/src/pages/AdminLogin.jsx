@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom"
 import axios from "axios"
 import { AuthContext } from "../context/AuthContext";
 
-const Login = () => {
+const AdminLogin = () => {
     const [error, setError] = useState("")
     const [inputs, setInputs] = useState({
         email: "",
@@ -12,7 +12,7 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const {login} = useContext(AuthContext)
+    const {loginAdmin} = useContext(AuthContext)
 
     function handleChange(e) {
         setInputs((prev) => ({...prev, [e.target.name]: e.target.value}))
@@ -20,7 +20,7 @@ const Login = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        const err = await login(inputs);
+        const err = await loginAdmin(inputs);
         if (err) {
             setError(err)
         } else {
@@ -31,7 +31,7 @@ const Login = () => {
         <div className="login-container">
             <div className="login-inner">
                 <div className="login-header">
-                    <h1>Login</h1>
+                    <h1>Admin Login</h1>
                 </div>
                 <div className="login-content">
                     
@@ -41,8 +41,7 @@ const Login = () => {
                 <div className="footer">
                     <p className="error">{error} </p>
                     <button onClick={handleSubmit}>Login</button>
-                    <p>Don't have an account? <a href="/register"><u>Register</u></a> here</p>
-                    <p>Click <a href="/adminLogin"><u>here</u></a> for admin</p>
+                    <p>Click <a href="/login"><u>here</u></a> for user login</p>
                 </div>
                 
             </div>
@@ -51,5 +50,5 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default AdminLogin;
 

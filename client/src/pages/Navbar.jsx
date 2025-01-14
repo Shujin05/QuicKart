@@ -1,10 +1,19 @@
-import {useState, useEffect} from "react"
-import {useLocation} from "react-router-dom"
-
+import {useState, useEffect, useContext} from "react"
+import {useNavigate} from "react-router-dom"
+import {AuthContext} from "../context/AuthContext"
 
 
 const Navbar = () => {
-    const [isAdmin, setIsAdmin] = useState(true)
+    const [isAdmin, setIsAdmin] = useState(false)
+
+    const {logout} = useContext(AuthContext)
+    const navigate = useNavigate();
+
+    function handleLogout(e) {
+        e.preventDefault();
+        logout();
+        navigate("/login");
+    }
 
     return (
         <div className="sidebar">
@@ -12,9 +21,9 @@ const Navbar = () => {
             {
                 isAdmin ? <>
                     <a href="/">Home</a>
-                    <a href="/products">Manage Users</a>
-                    <a href="/transaction">Inventory</a>
-                    <a href="/transaction">Logout</a>
+                    <a href="/manage-user">Manage Users</a>
+                    <a href="/inventory">Inventory</a>
+                    <a href="/transaction" onClick={handleLogout}>Logout</a>
                 </> :
                 <>
                     <a href="/">Home</a>

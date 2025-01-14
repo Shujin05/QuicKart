@@ -2,16 +2,10 @@
 
 #row1 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     width: 100%;
     gap: 8px 32px;
 }
-
-@media screen and (max-width: 1024px) {
-    #row1 {
-        grid-template-columns: 1fr;
-    }
-  }
 
 .user-home-container {
     padding: 16px;
@@ -112,7 +106,7 @@
 
 .rec-product-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
     padding: 16px 0px;
 }

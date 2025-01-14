@@ -5,28 +5,52 @@ import axios from "axios";
 export const AuthContext = createContext()
 
 export const AuthContextProvider = ({children}) => {
-    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("user") || null))
+    const [token, setToken] = useState(localStorage.getItem("token") || null)
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const login = async(inputs) => {
         const res = await axios.post("/api/user/login", inputs);
-        localStorage.setItem("token", res.data.token);
+        if (!res.data.success) {
+            return res.data.message;
+        } else {
+            setToken(res.data.token)
+            return null;
+        }
+    }
+
+    const loginAdmin = async(inputs) => {
+        const res = await axios.post("/api/admin/login", inputs);
+        if (!res.data.success) {
+            return res.data.message;
+        } else {
+            setToken(res.data.token)
+            return null;
+        }
+    }
+
+    const register = async(inputs) => {
+        const res = await axios.post("/api/user/register", inputs);
+        if (!res.data.success) {
+            return res.data.message;
+        } else {
+            setToken(res.data.token)
+            return null;
+        }
     }
 
     const logout = async(inputs) => {
-        try {
-            await axios.post("/api/user/logout")
-        }
-        catch(err){
-            console.log(err)
-        }
-        setCurrentUser(null)
+        setToken(null)
     }
 
     useEffect(() => {
-        //localStorage.setItem("token", JSON.stringify(currentUser))
-    }, [currentUser])
+        localStorage.setItem("token", token)
+    }, [token])
 
-    return <AuthContext.Provider value={{currentUser, login, logout}}>
+    useEffect(()=> {
+        //verify admin here
+    }, [])
+
+    return <AuthContext.Provider value={{token, isAdmin, login, loginAdmin, register, logout}}>
         {children}
     </AuthContext.Provider>
 }

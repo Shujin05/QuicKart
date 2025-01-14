@@ -5,6 +5,7 @@
     height: 100vh;
     background-color: constants.$primary-color;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -16,7 +17,7 @@
     border-radius: 16px;
 
     display: grid;
-    grid-template-rows: 1fr 2fr 0.75fr;
+    grid-template-rows: 1fr 1.8fr 1.2fr;
 
     input {
         width: 70%;
@@ -50,7 +51,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        margin: 32px 0px;
+        margin: 16px 0px;
     }
 
     .login-footer {

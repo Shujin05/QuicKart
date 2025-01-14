@@ -92,3 +92,64 @@
 .order-status-rejected {
     background-color: red;
 }
+
+.rec-product-header {
+    border-bottom: 1px solid constants.$dark-color;
+    margin-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    h2 {
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    button {
+        padding: 8px 16px;
+    }
+}
+
+.rec-product-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 16px 0px;
+}
+
+@media screen and (max-width: 1200px) {
+    .rec-product-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .rec-product-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+.product-card {
+    border-radius: 16px;
+    background-color: constants.$primary-color;
+    height: 30em;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        overflow-y: hidden;
+        border-radius: 16px 16px 0px 0px;
+    }
+}
+
+.product-card-content {
+    padding: 8px 16px;
+    margin-bottom: 16px;
+    h2, h3, p {
+        margin: 8px 0px;
+    }
+}

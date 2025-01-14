@@ -1,4 +1,6 @@
 import {useState} from "react"
+import {useNavigate} from "react-router-dom"
+import ProductCard from "../components/ProductCard"
 
 const OrderStatus = (props) => {
     return (
@@ -9,6 +11,11 @@ const OrderStatus = (props) => {
 }
 
 const UserHome = () => {
+    const navigate = useNavigate()
+
+    function viewAllProducts() {
+        navigate("/products")
+    }
     return (
         <div className="user-home-container">
             <h1>Welcome back, User</h1>
@@ -20,7 +27,7 @@ const UserHome = () => {
                 <div className="card">
                     <div className="user-transaction-header">   
                         <h3>Recent Transactions</h3>
-                        <a href="/transactions">{"View All >"}</a>
+                        <a href="/transaction">{"View All >"}</a>
                     </div>
                     <div className="transaction-list">
                         <div className="transaction-item">
@@ -51,7 +58,15 @@ const UserHome = () => {
                         </div>
                     </div>
                 </div>
-                
+            </div>
+            <div className="rec-product-header">
+                <h2>New Products</h2>
+                <button onClick={viewAllProducts}>View All</button>
+            </div>
+            <div className="rec-product-list">
+                <ProductCard/>
+                <ProductCard/>
+                <ProductCard/>
             </div>
         </div>
         

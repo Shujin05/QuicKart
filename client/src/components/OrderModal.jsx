@@ -2,13 +2,30 @@ import {useState, useEffect, forwardRef, useImperativeHandle, useRef, useContext
 import axios from "axios"
 import {AuthContext} from "../context/AuthContext"
 
+const InStock = () => {
+    return (
+        <div className={"order-status order-status-approved"}>
+            <p style={{margin: "0px"}}>In Stock</p>
+        </div>
+    )
+}
+
+const OutOfStock = () => {
+    return (
+        <div className={"order-status order-status-pending"}>
+            <p style={{margin: "0px"}}>Out Of Stock</p>
+        </div>
+    )
+}
+
 const OrderModal = forwardRef((props, ref) => {
     const [modalInfo, setModalInfo] = useState({
         id: -1,
         name: "",
         stock: 0,
         price: 0,
-        quantity: 1
+        quantity: 1,
+        status: "in-stock"
     })
 
     const [error, setError] = useState("")
@@ -83,11 +100,15 @@ const OrderModal = forwardRef((props, ref) => {
     return (
         <div className="modal" ref={modalRef}>
             <div className="modal-content">
-                <img src="/milo.jpg" alt="milo"></img>
+                <img src="/milo.jpg" alt="milo" className={props.status}></img>
                 <div className="modal-description">
                     <h2>{modalInfo.name}</h2>
-                    <p><b>Stock: {modalInfo.stock}</b></p>
                     <p><b>Price: {modalInfo.price} credits</b></p>
+                    <div style={{display: "flex"}}>
+                    {modalInfo.status === "out-of-stock" 
+                        ? <OutOfStock/>
+                        : <InStock/>}
+                    </div>
                     <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                     <div className="quantity-div">
                         <button onClick={decreaseQuantity}><p>-</p></button>
@@ -95,7 +116,11 @@ const OrderModal = forwardRef((props, ref) => {
                         <button onClick={addQuantity}><p>+</p></button>
                     </div>
                     
-                    <button onClick={submitOrder}>Place Order</button>
+                    <button onClick={submitOrder}>{
+                        modalInfo.status === "out-of-stock"
+                        ? <>Pre-order</>
+                        : <>Place Order</>
+                    }</button>
                     <p style={{color: "red"}}>{error}</p>
                 </div>
             </div>

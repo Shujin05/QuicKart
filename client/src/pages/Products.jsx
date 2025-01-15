@@ -27,7 +27,7 @@ const Products = () => {
                             name: item.name,
                             stock: item.quantity,
                             price: item.voucherAmount,
-                            status: item.status
+                            status: "out-of-stock"
                         })
                     }
                     setProducts(newArray);
@@ -52,7 +52,8 @@ const Products = () => {
                     name: product.name,
                     stock: product.stock,
                     price: product.price,
-                    quantity: 1
+                    quantity: 1,
+                    status: product.status
                 });
                 return;
             }
@@ -73,6 +74,7 @@ const Products = () => {
                         name={item.name}
                         price={item.price}
                         stock={item.stock}
+                        status={item.status}
                         triggerModal={triggerModal}/>
                 })}
             </div>

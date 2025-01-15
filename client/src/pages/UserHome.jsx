@@ -9,7 +9,7 @@ import axios from "axios"
 const UserHome = () => {
     const [products, setProducts] = useState([]);
 
-    const {token, logout} = useContext(AuthContext)
+    const {token} = useContext(AuthContext)
     const navigate = useNavigate()
     const modalRef = useRef();
 

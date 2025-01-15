@@ -4,7 +4,7 @@ import authMiddleware from "../middleware/auth.js";
 
 const orderRouter = express.Router();
 
-orderRouter.post("/addOrder", authMiddleware , addOrder);
-orderRouter.post("/changeOrderStatus", authMiddleware , changeOrderStatus);
+orderRouter.post("/addOrder" , authMiddleware, addOrder);
+orderRouter.post("/changeOrderStatus", authMiddleware, changeOrderStatus);
 
 export default orderRouter;

@@ -12,30 +12,30 @@ const addOrder = async (req, res) => {
         quantityRequested: quantityRequested
     });
 
-    const order = await newOrder.save();
+    await newOrder.save();
 
     return res.json({message: "Your order is pending approval."});
 
 }
 
 const changeOrderStatus = async (req, res) => {
-    const { orderID, status } = req.body;
+    const { orderID, newStatus } = req.body;
 
     // Validate inputs
-    if (!orderID || !status) {
+    if (!orderID || !newStatus) {
         return res.status(400).json({ message: "Invalid input: orderID and status are required." });
     }
 
     // Restrict status to approved or rejected
     const allowedStatuses = ["approved", "rejected"];
-    if (!allowedStatuses.includes(status)) {
+    if (!allowedStatuses.includes(newStatus)) {
         return res.status(400).json({ message: `Invalid status. Allowed values: ${allowedStatuses.join(", ")}` });
     }
 
     try {
         const order = await orderModel.findByIdAndUpdate(
             orderID,
-            { status: status },
+            { status: newStatus },
             { new: true } // Return the updated document
         );
 
@@ -43,7 +43,7 @@ const changeOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Error, order not found." });
         }
 
-        return res.json({ message: `Order has been ${status}`, order });
+        return res.json({ message: `Order has been ${newStatus}`, order });
 
     } catch (error) {
         console.error("Error updating order:", error); // Log error

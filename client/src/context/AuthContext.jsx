@@ -1,5 +1,6 @@
 import {createContext, useEffect, useState} from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 // to be updated, have no idea how jwt works
 export const AuthContext = createContext()
@@ -43,12 +44,15 @@ export const AuthContextProvider = ({children}) => {
     }
 
     useEffect(() => {
-        localStorage.setItem("token", token)
+        console.log("running decoder")
+        localStorage.setItem("token", token);
+        try {
+            const decoded = jwtDecode(token);
+            setIsAdmin(decoded.isAdmin);
+        } catch (err) {
+            return;
+        }
     }, [token])
-
-    useEffect(()=> {
-        //verify admin here
-    }, [])
 
     return <AuthContext.Provider value={{token, isAdmin, login, loginAdmin, register, logout}}>
         {children}

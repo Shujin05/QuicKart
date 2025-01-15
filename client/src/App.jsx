@@ -25,6 +25,7 @@ import "./styles/Navbar.scss"
 import "./styles/UserHome.scss"
 import "./styles/AdminHome.scss"
 import "./styles/Products.scss"
+import "./styles/Transaction.scss"
 
 
 function App() {

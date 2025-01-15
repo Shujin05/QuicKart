@@ -4,9 +4,7 @@ import {AuthContext} from "../context/AuthContext"
 
 
 const Navbar = () => {
-    const [isAdmin, setIsAdmin] = useState(false)
-
-    const {logout} = useContext(AuthContext)
+    const {logout, isAdmin} = useContext(AuthContext)
     const navigate = useNavigate();
 
     function handleLogout(e) {
@@ -29,7 +27,7 @@ const Navbar = () => {
                     <a href="/">Home</a>
                     <a href="/products">Products</a>
                     <a href="/transaction">Transaction History</a>
-                    <a href="/transaction">Logout</a>
+                    <a href="/transaction" onClick={handleLogout}>Logout</a>
                 </>
             }
             

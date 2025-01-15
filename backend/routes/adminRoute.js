@@ -9,6 +9,6 @@ adminRouter.post('/login', loginAdmin)
 adminRouter.post("/changePassword", changePassword)
 adminRouter.post('/resetPassword', verifyAdmin, resetPassword)
 adminRouter.post('/suspendUser', verifyAdmin, suspendUser)
-adminRouter.post('/adminAddUser', verifyAdmin, adminAddUser)
+//adminRouter.post('/adminAddUser', verifyAdmin, adminAddUser)
 
 export default adminRouter; 

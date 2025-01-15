@@ -18,6 +18,7 @@ import Transaction from "./pages/Transaction"
 import ManageUser from "./pages/ManageUser"
 import Inventory from "./pages/Inventory"
 import AdminLogin from "./pages/AdminLogin"
+import Requests from "./pages/Requests"
 
 import './App.css'
 import "./styles/Login.scss"
@@ -64,6 +65,10 @@ function App() {
         {
           path: "/inventory",
           element: <Inventory/>
+        }, 
+        {
+          path: "/requests",
+          element: <Requests/>
         }
       ]
     }, 

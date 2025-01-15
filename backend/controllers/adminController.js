@@ -1,5 +1,6 @@
 import adminModel from "../models/adminModel.js";
 import userModel from "../models/userModel.js";
+import { registerUser } from "./userController.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import validator from "validator"
@@ -190,3 +191,23 @@ const suspendUser = async (req, res) => {
 };
 
 export {loginAdmin, registerAdmin, changePassword, suspendUser, resetPassword};  
+
+const adminAddUser = async (req, res) => {
+    const { name, email, password, confirmPassword } = req.body;
+
+    try {
+        registerUser(name, email, password, confirmPassword);
+
+        res.json({
+            success: true,
+            message: "You have created a new user account."
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while suspending the user account",
+        });
+    }
+}

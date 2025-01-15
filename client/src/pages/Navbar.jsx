@@ -21,6 +21,7 @@ const Navbar = () => {
                     <a href="/">Home</a>
                     <a href="/manage-user">Manage Users</a>
                     <a href="/inventory">Inventory</a>
+                    <a href="/users">Users</a>
                     <a href="/transaction" onClick={handleLogout}>Logout</a>
                 </> :
                 <>

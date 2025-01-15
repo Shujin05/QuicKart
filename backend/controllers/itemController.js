@@ -17,7 +17,7 @@ const addItem = async (req, res) => {
 
          // Log the admin's action
          const log = new logModel({
-            adminID: req.body.adminID,
+            adminID: req.body.adminId,
             action: "add", 
             itemId: item._id
          })
@@ -70,7 +70,7 @@ const updateItemQuantity = async (req, res) => {
 
         // Log the admin's action
         const log = new logModel({
-            adminID: req.adminID,
+            adminID: req.body.adminId,
             action: "update quantity", 
             itemId: updatedItem.id 
          })

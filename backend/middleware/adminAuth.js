@@ -12,7 +12,7 @@ const verifyAdmin = async (req, res, next) => {
     try {
         const token_decode = jwt.verify(token, process.env.JWT_SECRET); 
         const admin = await adminModel.findById(token_decode.id);
-        req.adminID = admin._id;
+        res.body.adminId = token_decode.id; 
 
         if (!admin) {
             return res.status(403).json({ success: false, message: 'Admin not found' });

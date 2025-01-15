@@ -1,28 +1,45 @@
-import {useState, useRef, useEffect} from "react"
+import {useState, useRef, useEffect, useContext} from "react"
+import {useNavigate} from "react-router-dom"
 import ProductCard from "../components/ProductCard"
 import OrderModal from "../components/OrderModal"
+import {AuthContext} from "../context/AuthContext"
+import axios from "axios"
 
 const Products = () => {
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            name: "milo",
-            stock: 3,
-            price: 15
-        },
-        {
-            id: 2,
-            name: "biscuits",
-            stock: 3,
-            price: 15
-        },
-        {
-            id: 3,
-            name: "milk",
-            stock: 5,
-            price: 15
+    const [products, setProducts] = useState([]);
+    const {token} = useContext(AuthContext)
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        const fetchData = async() => {
+            if (!token) {
+                navigate("/login")
+                return;
+            }
+            try {
+                const res = await axios.get("api/item/list", {headers: {token: token}})
+                if (res.data.success) {
+                    const data = res.data.data;
+                    const newArray = [];
+                    for (let item of data) {
+                        newArray.push({
+                            id: item.id,
+                            name: item.name,
+                            stock: item.quantity,
+                            price: item.voucherAmount,
+                            status: "out-of-stock"
+                        })
+                    }
+                    setProducts(newArray);
+                } else {
+                    console.log(res.data.message)
+                }
+            } catch (err) {
+                console.log(err)
+            }
         }
-    ]);
+        fetchData();
+    }, [token])
     
     const modalRef = useRef(null);
 
@@ -35,7 +52,8 @@ const Products = () => {
                     name: product.name,
                     stock: product.stock,
                     price: product.price,
-                    quantity: 1
+                    quantity: 1,
+                    status: product.status
                 });
                 return;
             }
@@ -56,6 +74,7 @@ const Products = () => {
                         name={item.name}
                         price={item.price}
                         stock={item.stock}
+                        status={item.status}
                         triggerModal={triggerModal}/>
                 })}
             </div>

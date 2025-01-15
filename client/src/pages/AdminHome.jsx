@@ -43,30 +43,42 @@ function AdminHome(){
                         <p>Item 1</p>
                         <p>10 Credits</p>
                         <p>01/01/2025</p>
-                        <div style={{display: "flex"}}>
-                                <RequestStatus status="approved"/>
-                                <RequestStatus status="rejected"/>
-                        </div>
+                        <button style={{ backgroundColor: 'green', color: 'black', padding: '2px' }}
+                            onClick={() => alert('Request Approved!')}>                     
+                            Approved
+                        </button>
+                        <button style={{ backgroundColor: 'red', color: 'black', padding: '2px' }}
+                            onClick={() => alert('Request Rejected!')}>                     
+                            Rejected
+                        </button>
                     </div>
                     <div className="request-item">
                         <p>User B</p>                            
                         <p>Item 2</p>
                         <p>8 Credits</p>
                         <p>02/01/2025</p>
-                        <div style={{display: "flex"}}>
-                                <RequestStatus status="approved"/>
-                                <RequestStatus status="rejected"/>
-                        </div>
+                        <button style={{ backgroundColor: 'green', color: 'black', padding: '2px' }}
+                            onClick={() => alert('Request Approved!')}>                     
+                            Approved
+                        </button>
+                        <button style={{ backgroundColor: 'red', color: 'black', padding: '2px' }}
+                            onClick={() => alert('Request Rejected!')}>                     
+                            Rejected
+                        </button>
                     </div>
                     <div className="request-item">
                         <p>User C</p>
                         <p>Item 3</p>
                         <p>12 Credits</p>
                         <p>04/01/2025</p>
-                        <div style={{display: "flex"}}>
-                                <RequestStatus status="approved"/>
-                                <RequestStatus status="rejected"/>
-                        </div>
+                        <button style={{ backgroundColor: 'green', color: 'black', padding: '2px' }}
+                            onClick={() => alert('Request Approved!')}>                     
+                            Approved
+                        </button>
+                        <button style={{ backgroundColor: 'red', color: 'black', padding: '2px' }}
+                            onClick={() => alert('Request Rejected!')}>                     
+                            Rejected
+                        </button>
                     </div>
                 </div>
                 <div className="admin-request-header">   

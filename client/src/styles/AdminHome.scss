@@ -61,7 +61,7 @@
         border-bottom: 1px solid constants.$dark-color;
         padding: 8px;
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(6, 1fr);
 
         * {
             display: flex;
@@ -177,11 +177,11 @@
     align-items: end;
     margin-bottom: 8px;
 
-    h3 {
+    h2 {
         margin: 0;
     }
 
-    a {
+    h3 {
         text-decoration: underline;
     }
 }

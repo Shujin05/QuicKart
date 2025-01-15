@@ -1,7 +1,20 @@
-import {useState} from "react"
+import {useState, useEffect, useContext} from "react"
+import {useNavigate} from "react-router-dom"
 import OrderStatus from "../components/OrderStatus"
+import {AuthContext} from "../context/AuthContext"
 
 const Transaction = () => {
+    const {token} = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    useEffect(()=> {
+        const fetchData = async() => {
+            if (!token) {
+                navigate("/login")
+                return;
+            }
+        }
+    })
     return (
         <div className="product-page-container">
             <div className="product-page-header">

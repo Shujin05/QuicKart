@@ -6,16 +6,18 @@ const OrderModal = forwardRef((props, ref) => {
         name: "",
         stock: 0,
         price: 10,
-        quantity: 1
+        quantity: 1,
+        status: ""
     })
 
     const modalRef = useRef(null)
 
     useImperativeHandle(ref, ()=>{
         return {
-            triggerModal() {
+            triggerModal(info) {
                 if (modalRef) {
                     modalRef.current.style.display = "block"
+                    setModalInfo(info)
                 }
             },
         }
@@ -45,9 +47,7 @@ const OrderModal = forwardRef((props, ref) => {
     }
 // for your reference
     function addQuantity() {
-        if (modalInfo.quantity < modalInfo.stock) {
-            setModalInfo((prev)=> ({...prev, quantity: prev.quantity + 1}))
-        }
+        setModalInfo((prev)=> ({...prev, quantity: prev.quantity + 1}))
     }
 
     function decreaseQuantity() {
@@ -75,7 +75,7 @@ const OrderModal = forwardRef((props, ref) => {
                         <p className="number-text"><b>{modalInfo.quantity}</b></p>
                         <button onClick={addQuantity}><p>+</p></button>
                     </div>
-                    <button onClick={submitOrder}>Place Order</button>
+                    <button onClick={submitOrder}>Update Quantity</button>
                 </div>
                 
             </div>

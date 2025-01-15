@@ -17,12 +17,14 @@ import Products from "./pages/Products"
 import Transaction from "./pages/Transaction"
 import ManageUser from "./pages/ManageUser"
 import Inventory from "./pages/Inventory"
+import Users from "./pages/Users"
 
 import './App.css'
 import "./styles/Login.scss"
 import "./styles/Navbar.scss"
 import "./styles/UserHome.scss"
 import "./styles/AdminHome.scss"
+import "./styles/Users.scss"
 
 
 function App() {

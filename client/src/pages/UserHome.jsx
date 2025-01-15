@@ -1,20 +1,57 @@
-import {useState} from "react"
+import {useState, useRef} from "react"
 import {useNavigate} from "react-router-dom"
 import ProductCard from "../components/ProductCard"
-
-const OrderStatus = (props) => {
-    return (
-        <div className={`order-status order-status-${props.status}`}>
-            <p>{props.status}</p>
-        </div>
-    )
-}
+import OrderStatus from "../components/OrderStatus"
+import OrderModal from "../components/OrderModal"
 
 const UserHome = () => {
+    const [products, setProducts] = useState([
+        {
+            id: 1,
+            name: "milo",
+            stock: 3,
+            price: 15
+        },
+        {
+            id: 2,
+            name: "biscuits",
+            stock: 3,
+            price: 15
+        },
+        {
+            id: 3,
+            name: "milk",
+            stock: 5,
+            price: 15
+        },
+        {
+            id: 4,
+            name: "fan",
+            stock: 5,
+            price: 40
+        }
+    ]);
     const navigate = useNavigate()
+    const modalRef = useRef();
 
     function viewAllProducts() {
         navigate("/products")
+    }
+
+    function triggerModal(id) {
+        if (!modalRef) return;
+        for (let product of products) {
+            if (product.id === id) {
+                modalRef.current.triggerModal({
+                    id: product.id,
+                    name: product.name,
+                    stock: product.stock,
+                    price: product.price,
+                    quantity: 1
+                });
+                return;
+            }
+        }
     }
     return (
         <div className="user-home-container">
@@ -64,10 +101,16 @@ const UserHome = () => {
                 <button onClick={viewAllProducts}>View All</button>
             </div>
             <div className="rec-product-list">
-                <ProductCard/>
-                <ProductCard/>
-                <ProductCard/>
+                {products.map((product) => {
+                    return <ProductCard 
+                            key={product.id}
+                            id ={product.id}
+                            name={product.name}
+                            price={product.price}
+                            triggerModal={triggerModal}/>
+                })}
             </div>
+            <OrderModal ref={modalRef}/>
         </div>
         
         

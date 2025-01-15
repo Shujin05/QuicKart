@@ -9,7 +9,6 @@ const addItem = async (req, res) => {
     const item = new itemModel({
         name: req.body.name, 
         voucherAmount: req.body.voucherAmount, 
-        category: req.body.category,
         image: image_filename, 
     })
     
@@ -17,12 +16,12 @@ const addItem = async (req, res) => {
         await item.save(); 
 
          // Log the admin's action
-         const adminEmail = req.adminEmail; 
-         const action = "Add Item";
-         await new logModel({
-             adminEmail,
-             action,
-         }).save();
+         const log = new logModel({
+            adminID: req.body.adminID,
+            action: "add", 
+            itemId: item._id
+         })
+         await log.save(); 
 
         res.json({success:true, message: "Item Added"})
     } catch (error) {
@@ -39,20 +38,6 @@ const listItem = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.json({success:false, message:"Error"})
-    }
-}
-
-// remove item  
-const removeItem = async (req, res) => {
-    try {
-        const item = await itemModel.findById(req.body.id);
-        fs.unlink(`uploads/${item.image}`, ()=>{}); // remove image from uploads folder
-
-        await itemModel.findByIdAndDelete(req.body.id); 
-        res.json({success:true, message:"Item Removed"})
-    } catch (error) {
-        console.log(error); 
-        res.json({success: false, message:"Error"})
     }
 }
 
@@ -83,6 +68,14 @@ const updateItemQuantity = async (req, res) => {
             { new: true } // Return the updated item
         );
 
+        // Log the admin's action
+        const log = new logModel({
+            adminID: req.body.adminID,
+            action: "update quantity", 
+            itemId: updatedItem.id 
+         })
+         await log.save(); 
+
         res.json({ success: true, message: "Item quantity updated", data: updatedItem });
     } catch (error) {
         console.log(error);
@@ -92,4 +85,4 @@ const updateItemQuantity = async (req, res) => {
 
 
 
-export {addItem, listItem, removeItem, updateItemQuantity}; 
+export {addItem, listItem, updateItemQuantity}; 

@@ -33,12 +33,13 @@ const loginUser = async (req, res) => {
 
 // create token 
 const createToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET)
+    return jwt.sign({id: id, isAdmin: false}, process.env.JWT_SECRET)
 }
 
 // register user
 const registerUser = async (req, res) => {
-    const {name, email, password, confirm_password} = req.body; 
+    const {name, email, password, confirmPassword} = req.body; 
+
     try {
         // check if account already exists
         const exists = await userModel.findOne({email})
@@ -51,7 +52,7 @@ const registerUser = async (req, res) => {
             return res.json({success:false, message:"Please enter a valid email"})
         }
 
-        if (confirm_password != password) {
+        if (confirmPassword != password) {
             return res.json({success:false, message:"Please ensure both passwords are the same"})
         }
 
@@ -84,7 +85,7 @@ const registerUser = async (req, res) => {
 
 // Change password function
 const changePassword = async (req, res) => {
-    const { email, currentPassword, newPassword } = req.body;
+    const { email, currentPassword, newPassword, confirmPassword} = req.body;
 
     try {
         // Find user by email
@@ -99,6 +100,10 @@ const changePassword = async (req, res) => {
 
         if (!isMatch) {
             return res.json({ success: false, message: "Current password is incorrect" });
+        }
+
+        if (confirmPassword != newPassword) {
+            return res.json({success:false, message:"Please ensure both passwords are the same"})
         }
 
         // Validate new password

@@ -28,6 +28,7 @@ import "./styles/AdminHome.scss"
 import "./styles/Products.scss"
 import "./styles/Transaction.scss"
 import "./styles/Inventory.scss"
+import "./styles/Users.scss"
 
 
 function App() {

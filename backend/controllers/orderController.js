@@ -18,32 +18,27 @@ const addOrder = async (req, res) => {
 
 }
 
-const changeOrderStatus = async (req, res) => {
-    const { orderID, newStatus } = req.body;
+const approveOrder = async (req, res) => {
+    const { orderID } = req.body;
 
     // Validate inputs
-    if (!orderID || !newStatus) {
-        return res.status(400).json({ message: "Invalid input: orderID and status are required." });
-    }
-
-    // Restrict status to approved or rejected
-    const allowedStatuses = ["approved", "rejected"];
-    if (!allowedStatuses.includes(newStatus)) {
-        return res.status(400).json({ message: `Invalid status. Allowed values: ${allowedStatuses.join(", ")}` });
+    if (!orderID) {
+        return res.status(400).json({ message: "Invalid input: orderID is required." });
     }
 
     try {
-        const order = await orderModel.findByIdAndUpdate(
-            orderID,
-            { status: newStatus },
-            { new: true } // Return the updated document
-        );
+        const order = await orderModel.findById(orderID)
 
         if (!order) {
             return res.status(404).json({ message: "Error, order not found." });
         }
 
-        return res.json({ message: `Order has been ${newStatus}`, order });
+        await orderModel.findByIdAndUpdate(
+            orderID,
+            { status: "approved" },
+        )
+
+        return res.json({ message: "Order has been approved", order });
 
     } catch (error) {
         console.error("Error updating order:", error); // Log error
@@ -51,6 +46,64 @@ const changeOrderStatus = async (req, res) => {
     }
 };
 
-export {addOrder, changeOrderStatus}; 
+const rejectOrder = async (req, res) => {
+    const { orderID } = req.body;
+
+    // Validate inputs
+    if (!orderID) {
+        return res.status(400).json({ message: "Invalid input: orderID is required." });
+    }
+
+    try {
+        const order = userModel.findById(req.body.orderID)
+
+        if (!order) {
+            return res.status(404).json({ message: "Error, order not found." });
+        }
+
+        // return voucher down payment 
+        quantityRequested = order.quantityRequested
+        const item = await itemModel.findById(order.itemID)
+        totalPrice = (item.voucherAmount)*quantityRequested
+
+        userID = order.userID
+        user = await userModel.findByIdAndUpdate(
+            userID,
+            { voucherBalance: voucherBalance + totalPrice },
+            { new: true } // Return the updated document
+        );
+
+        await orderModel.findByIdAndUpdate(
+            orderID,
+            { status: "rejected" },
+            { new: true } // Return the updated document
+        );
+
+        return res.json({ message: "Order has been rejected", order });
+
+    } catch (error) {
+        console.error("Error updating order:", error); // Log error
+        res.status(500).json({ message: "Error updating order status", error });
+    }
+};
+
+// list all order 
+const listOrder = async (req, res) => {
+    try {
+        if (!req.body.listQuantity) {
+            const orders = await orderModel.find({}); 
+        }
+        else {
+            listQuantity = req.body.listQuantity 
+            const orders = await orderModel.find({}).limit(listQuantity); 
+        }
+        res.json({success:true, data: orders})
+    } catch (error) {
+        console.log(error);
+        res.json({success:false, message:"Error"})
+    }
+}
+
+export {addOrder, approveOrder, rejectOrder , listOrder}; 
 
 

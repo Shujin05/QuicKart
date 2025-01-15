@@ -44,8 +44,12 @@ export const AuthContextProvider = ({children}) => {
     }
 
     useEffect(() => {
-        console.log("running decoder")
-        localStorage.setItem("token", token);
+        if (token === null) {
+            localStorage.removeItem("token")
+        } else {
+            localStorage.setItem("token", token);
+        }
+        
         try {
             const decoded = jwtDecode(token);
             setIsAdmin(decoded.isAdmin);

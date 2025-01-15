@@ -1,38 +1,48 @@
-import {useState, useRef} from "react"
+import {useState, useRef, useEffect, useContext} from "react"
 import {useNavigate} from "react-router-dom"
 import ProductCard from "../components/ProductCard"
 import OrderStatus from "../components/OrderStatus"
 import OrderModal from "../components/OrderModal"
+import {AuthContext} from "../context/AuthContext"
+import axios from "axios"
 
 const UserHome = () => {
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            name: "milo",
-            stock: 3,
-            price: 15
-        },
-        {
-            id: 2,
-            name: "biscuits",
-            stock: 3,
-            price: 15
-        },
-        {
-            id: 3,
-            name: "milk",
-            stock: 5,
-            price: 15
-        },
-        {
-            id: 4,
-            name: "fan",
-            stock: 5,
-            price: 40
-        }
-    ]);
+    const [products, setProducts] = useState([]);
+
+    const {token, logout} = useContext(AuthContext)
     const navigate = useNavigate()
     const modalRef = useRef();
+
+    useEffect(()=>{
+        const fetchData = async() => {
+            if (!token) {
+                navigate("/login")
+                return;
+            }
+            try {
+                const res = await axios.get("api/item/list", {headers: {token: token}})
+                if (res.data.success) {
+                    const data = res.data.data;
+                    const newArray = [];
+                    for (let item of data) {
+                        newArray.push({
+                            id: item.id,
+                            name: item.name,
+                            stock: item.quantity,
+                            price: item.voucherAmount,
+                            status: item.status
+                        })
+                    }
+                    setProducts(newArray);
+                } else {
+                    console.log(res.data.message)
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchData();
+    }, [token])
 
     function viewAllProducts() {
         navigate("/products")

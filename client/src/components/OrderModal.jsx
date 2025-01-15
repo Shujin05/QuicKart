@@ -1,4 +1,6 @@
-import {useState, useEffect, forwardRef, useImperativeHandle, useRef} from "react"
+import {useState, useEffect, forwardRef, useImperativeHandle, useRef, useContext} from "react"
+import axios from "axios"
+import {AuthContext} from "../context/AuthContext"
 
 const OrderModal = forwardRef((props, ref) => {
     const [modalInfo, setModalInfo] = useState({
@@ -9,7 +11,11 @@ const OrderModal = forwardRef((props, ref) => {
         quantity: 1
     })
 
+    const [error, setError] = useState("")
+
     const modalRef = useRef(null)
+
+    const {token} = useContext(AuthContext);
 
     useImperativeHandle(ref, ()=>{
         return {
@@ -27,6 +33,7 @@ const OrderModal = forwardRef((props, ref) => {
     useEffect(() => {
         function detectClick(e) {
             if (modalRef && e.target === modalRef.current) {
+                setError("")
                 modalRef.current.style.display = "none";
             }
         }
@@ -40,6 +47,7 @@ const OrderModal = forwardRef((props, ref) => {
     
     function closeModal() {
         if (modalRef) {
+            setError("")
             modalRef.current.style.display = "none";
         }
     }
@@ -57,8 +65,19 @@ const OrderModal = forwardRef((props, ref) => {
     }
 
     function submitOrder() {
-        console.log("submit order")
-        closeModal()
+        const data = {
+            itemID: modalInfo.id,
+            quantityRequested: modalInfo.quantity 
+        }
+
+        try {
+            axios.post("api/order/addOrder", data, {headers: {token: token}}).then((res)=> {
+                closeModal();
+                console.log("order placed")
+            })
+        } catch(err) {
+            setError(err)
+        }
     }
     
     return (
@@ -75,11 +94,11 @@ const OrderModal = forwardRef((props, ref) => {
                         <p className="number-text"><b>{modalInfo.quantity}</b></p>
                         <button onClick={addQuantity}><p>+</p></button>
                     </div>
+                    
                     <button onClick={submitOrder}>Place Order</button>
+                    <p style={{color: "red"}}>{error}</p>
                 </div>
-                
             </div>
-
         </div>
     )
 })

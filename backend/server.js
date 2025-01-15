@@ -7,7 +7,9 @@ import itemRouter from "./routes/itemRoute.js"
 import adminRouter from "./routes/adminRoute.js"
 import logRouter from "./routes/logRoute.js"
 import orderRouter from "./routes/orderRoute.js"
-import preorderRouter from "./routes/preorderRoute"
+import preorderRouter from "./routes/preorderRoute.js"
+import authMiddleware from "./middleware/auth.js"
+import verifyAdmin from "./middleware/adminAuth.js"
 
 // app configuration 
 const app = express()

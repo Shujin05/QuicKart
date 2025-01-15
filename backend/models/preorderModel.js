@@ -7,8 +7,6 @@ const preorderSchema = new mongoose.Schema({
     itemID: {type:String, required:true}, 
     quantityRequested: {type: Number, required: true},
 });
-// no order status because no stock.
-// when stock arrives, move the row from preorder table to order table, add status = "pending".
 
 const preorderModel = mongoose.models.preorder || mongoose.model("preorder", preorderSchema); 
 export default preorderModel; 

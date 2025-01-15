@@ -12,7 +12,6 @@ const addPreorder = async (req, res) => {
 
     await newPreorder.save();
 
-    const token = createToken(preorder._id);
     return res.json({message: "You have placed a preorder request."});
 }
 

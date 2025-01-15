@@ -53,4 +53,29 @@ const changeOrderStatus = async (req, res) => {
 
 export {addOrder, changeOrderStatus}; 
 
+const findOrderByUser = async (req, res) => {
+    const {userID} = req.body;
+ 
+    // Validate input
+    if (!userID) {
+        return res.status(400).json({ message: "Invalid input: userID is required." });
+    }
 
+    try {
+        const orders = await orderModel.find({userID: userID});
+
+        // Check if orders are found
+        if (!orders) {
+            return res.status(404).json({ message: "No orders found for this user." });
+        }
+
+        else {
+            return res.json({success: true, orders});
+        }
+    } catch {
+        console.error(error);
+
+        return res.status(500).json("An error has occurred.");
+    }
+
+}

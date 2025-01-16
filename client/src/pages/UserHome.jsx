@@ -6,24 +6,32 @@ import AddVoucherPopUp from "../components/AddVoucherPopUp.jsx"
 import {AuthContext} from "../context/AuthContext"
 import axios from "axios"
 import {formatDate} from "../util.js"
+import useToast from "../hooks/useToast.js"
 
 const UserHome = () => {
     const [products, setProducts] = useState([]);
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState([]);
+    const [userInfo, setUserInfo] = useState({
+        username: "",
+        voucherBalance: 0
+    })
 
     const {token} = useContext(AuthContext)
     const navigate = useNavigate()
     const modalRef = useRef(null);
     const voucherRef = useRef(null)
 
+    const {toastSuccess, toastError} = useToast();
+
     useEffect(()=>{
         const fetchData = async() => {
             if (!token) {
+                toastError("Login to access this page")
                 navigate("/login")
                 return;
             }
             try {
-                const res = await axios.get("api/item/list", {headers: {token: token}})
+                const res = await axios.get("api/item/list?limitQuantity=4", {headers: {token: token}})
                 if (res.data.success) {
                     const data = res.data.data;
                     const newArray = [];
@@ -38,11 +46,12 @@ const UserHome = () => {
                     }
                     setProducts(newArray);
                 } else {
+                    toastError("Fetch Error: Something went wrong while fetching product data")
                     console.log(res.data.message)
                 }
 
-                const orderRes = await axios.get("api/order/findOrderByUser", {headers: {token: token}})
-                if (res.data.success) {
+                const orderRes = await axios.get("api/order/findOrderByUser?limitQuantity=4", {headers: {token: token}})
+                if (orderRes.data.success) {
                     const data = orderRes.data.data;
                     const newArray = [];
                     let counter = 0;
@@ -61,14 +70,29 @@ const UserHome = () => {
                     }
                     setOrders(newArray)
                 } else {
-                    console.log(res.data.message)
+                    toastError("Fetch Error: Something went wrong while fetching transaction data")
+                    console.log(orderRes.data.message)
+                }
+
+                const userRes = await axios.get("api/user/getUserInfo", {headers: {token: token}});
+
+                if (userRes.data.success) {
+                    const data = userRes.data.data
+                    setUserInfo({
+                        username: data.name,
+                        voucherBalance: data.voucherBalance
+                    })
+                } else {
+                    toastError("Fetch Error: Something went wrong while fetching user data")
+                    console.log(userRes.data.message)
                 }
             } catch (err) {
+                toastError("Fetch Error: Something went wrong")
                 console.log(err)
             }
         }
         fetchData();
-    }, [token])
+    }, [])
 
     function viewAllProducts() {
         navigate("/products")
@@ -97,12 +121,12 @@ const UserHome = () => {
     }
     return (
         <div className="user-home-container">
-            <h1>Welcome back, User</h1>
+            <h1>Welcome back, {userInfo.username}</h1>
             <div id="row1">
                 <div className="card">
                 <h3>Voucher balance</h3>
                 <div style={{display: "flex", alignItems: "center"}}>
-                <h1>20 credits</h1>
+                <h1>{userInfo.voucherBalance} credits</h1>
                 <button style={{marginLeft: "32px"}} onClick={triggerVoucherPopUp}>Add Voucher</button>
                 </div>
                 

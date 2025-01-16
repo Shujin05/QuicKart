@@ -1,6 +1,7 @@
 import {useState, useEffect, forwardRef, useImperativeHandle, useRef, useContext} from "react"
 import axios from "axios"
 import {AuthContext} from "../context/AuthContext"
+import useToast from "../hooks/useToast"
 
 const AddVoucherPopUp = forwardRef((props, ref) => {
     const [voucherCode, setVoucherCode] = useState("")
@@ -9,6 +10,8 @@ const AddVoucherPopUp = forwardRef((props, ref) => {
     const modalRef = useRef(null)
 
     const {token} = useContext(AuthContext);
+
+    const {toastSuccess, toastError} = useToast();
 
     useImperativeHandle(ref, ()=>{
         return {
@@ -26,6 +29,7 @@ const AddVoucherPopUp = forwardRef((props, ref) => {
         function detectClick(e) {
             if (modalRef && e.target === modalRef.current) {
                 setError("")
+                setVoucherCode("")
                 modalRef.current.style.display = "none";
             }
         }
@@ -46,13 +50,17 @@ const AddVoucherPopUp = forwardRef((props, ref) => {
     }
 
     function submitForm() {
-        if (voucherCode === "voucher") {
-            console.log("voucher added")
+        const postData = async() => {
+            if (voucherCode !== "voucher") {
+                setError("Invalid voucher code")
+                return
+            }
+            //await axios.post("api/user/addVoucher")
+            toastSuccess("Voucher added to balance!")
             closeModal()
-        } else {
-            setError("Invalid voucher code")
         }
-        
+        postData();
+
     }
 
     function handleChange(e) {
@@ -64,7 +72,7 @@ const AddVoucherPopUp = forwardRef((props, ref) => {
             <div className="confirm-content">
 
                 <h2>Enter Voucher Code</h2>
-                <input required type="text" placeholder="Voucher Code" name="voucherCode" onChange={handleChange}></input>
+                <input required type="text" placeholder="Voucher Code" name="voucherCode" onChange={handleChange} value={voucherCode}></input>
                 <p className="error-text">{error}</p>
                 <div>
                     <button style={{marginRight: "8px"}} onClick={submitForm}>Add</button>

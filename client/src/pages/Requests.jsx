@@ -1,6 +1,7 @@
 import {useState, useEffect, useContext} from "react"
 import axios from "axios"
 import {AuthContext} from "../context/AuthContext"
+import {formatDate} from "../util.js"
 
 const Requests = () => {
     const [requests, setRequests] = useState([]);
@@ -24,22 +25,14 @@ const Requests = () => {
             if (res.data.success) {
                 const data = res.data.data;
                 const newArray = []
+                console.log(data)
                 for (let item of data) {
-                    const date = new Date(item.createdAt);
-
-                    // what is this monstrosity
-                    const formattedDate = `${String(date.getDate()).padStart(2, "0")}/${
-                        String(date.getMonth() + 1).padStart(2, "0")
-                      }/${date.getFullYear()} ${String(date.getHours()).padStart(2, "0")}:${
-                        String(date.getMinutes()).padStart(2, "0")
-                      }:${String(date.getSeconds()).padStart(2, "0")}`;
-
                     newArray.push({
                         id: item._id,
-                        user: item.userID,
-                        item: item.itemID,
+                        user: item.userName,
+                        item: item.itemName,
                         quantity: item.quantityRequested,
-                        date: formattedDate
+                        date: formatDate(item.createdAt)
                     })
                 }
                 setRequests(newArray);

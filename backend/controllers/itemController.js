@@ -9,6 +9,8 @@ const addItem = async (req, res) => {
     const item = new itemModel({
         name: req.body.name, 
         voucherAmount: req.body.voucherAmount, 
+        quantity: req.body.quantity,
+        homepageQuantity: req.body.quantity, 
         image: image_filename, 
     })
     
@@ -49,47 +51,55 @@ const listItem = async (req, res) => {
 }
 
 const updateItemQuantity = async (req, res) => {
-    const { id, quantity } = req.body; 
-    // Validate input
-    if (quantity == null || typeof quantity !== "number") {
+    const { itemID, quantity, adminID } = req.body;
+
+    if (!Number.isFinite(quantity)) {
         return res.json({ success: false, message: "Invalid quantity provided" });
+    }
+
+    if (!adminID) {
+        return res.json({ success: false, message: "Admin ID is required" });
     }
 
     try {
         // Check if the item exists
-        const item = await itemModel.findById(id);
+        const item = await itemModel.findById(itemID);
 
         if (!item) {
             return res.json({ success: false, message: "Item not found" });
         }
 
         // Ensure quantity does not go below zero
-        const updatedQuantity = item.quantity + quantity;
-        if (updatedQuantity < 0) {
-            return res.json({ success: false, message: "Resulting quantity cannot be negative" });
+        const updatedHomepageQuantity = item.homepageQuantity + quantity;
+        if (updatedHomepageQuantity < 0) {
+            return res.json({ success: false, message: "Resulting homepage quantity cannot be negative" });
         }
 
+        const updatedQuantity = item.quantity + quantity;
+
+        // Update item quantities
         const updatedItem = await itemModel.findByIdAndUpdate(
-            id,
-            { quantity: updatedQuantity },
-            { new: true } // Return the updated item
+            itemID,
+            {
+                quantity: updatedQuantity,
+                homepageQuantity: updatedHomepageQuantity,
+            },
+            { new: true }
         );
 
         // Log the admin's action
         const log = new logModel({
-            adminID: req.body.adminID,
-            action: "update quantity", 
-            itemId: updatedItem._id 
-         })
-         await log.save(); 
+            adminID: adminID,
+            action: "update quantity",
+            itemID: updatedItem._id,
+        });
+        await log.save();
 
         res.json({ success: true, message: "Item quantity updated", data: updatedItem });
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error updating item quantity" });
+        console.error("Error updating item quantity:", error);
+        res.status(500).json({ success: false, message: "Error updating item quantity", error: error.message });
     }
 };
-
-
 
 export {addItem, listItem, updateItemQuantity}; 

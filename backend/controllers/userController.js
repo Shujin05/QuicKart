@@ -168,10 +168,14 @@ const getUserInfo = async (req, res) => {
 
 // add voucher balance of users after completing tasks 
 const addVoucher = async (req, res) => {
-    const { userID } = req.body; 
+    const { userID, voucherAmount } = req.body; 
 
-    if (!userID) {
-        return res.status(400).json({success: false, message: "Invalid input: userID is required."});
+    if (!userID || !voucherAmount) {
+        return res.status(400).json({success: false, message: "Invalid input: userID and voucher amount are required."});
+    }
+
+    if (typeof voucherAmount !== 'number' || voucherAmount <= 0) {
+        return res.status(400).json({ success: false, message: "Invalid input: voucherAmount must be a positive number." });
     }
 
     try {
@@ -181,12 +185,15 @@ const addVoucher = async (req, res) => {
             return res.status(404).json({success: false, message: "User not found."});
         }
 
-        // work on this 
+        user.voucherBalance += voucherAmount;
+        await user.save();
+
+        return res.status(200).json({success: true, message: "Voucher balance added successfully."});
 
     } catch (error) {
-        console.error("Error fetching user info:", error);
-        return res.status(500).json({success: false, message: "An error occurred while fetching user info."});
+        console.error("Error adding voucher balance", error);
+        return res.status(500).json({success: false, message: "An error occurred while adding user's voucher balance."});
     }
 };
 
-export {loginUser, registerUser, changePassword, listAllUsers, getUserInfo}; 
+export {loginUser, registerUser, changePassword, listAllUsers, getUserInfo, addVoucher}; 

@@ -5,6 +5,7 @@ const itemSchema = new mongoose.Schema({
     voucherAmount: { type: Number, required: true },
     image:{type:String, required:true}, 
     quantity: { type: Number, required: true, min: 0},
+    homepageQuantity: { type: Number, required: true, min: 0}
 });
 
 itemSchema.virtual("status").get(function () {

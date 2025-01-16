@@ -24,7 +24,8 @@ app.post('/secure-route', authMiddleware, (req, res) => {
     res.json({ success: true, userID: req.body.userID });
 });
 
-app.post('/verifyAdmin', verifyAdmin, (req, res) => {
+// Secure route for admins only
+app.post('/admin-route', verifyAdmin, (req, res) => {
     res.json({ success: true, adminID: req.body.adminID });
 });
 

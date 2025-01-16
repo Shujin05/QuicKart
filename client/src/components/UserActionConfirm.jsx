@@ -49,9 +49,7 @@ const UserActionConfirm = forwardRef((props, ref) => {
     }
 
     function submitForm() {
-        if (modalInfo.type === "suspend") {
-            
-        }
+        console.log("submit");
         closeModal()
     }
 

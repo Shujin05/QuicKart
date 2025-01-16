@@ -7,7 +7,7 @@ const orderRouter = express.Router();
 orderRouter.post("/addOrder" , authMiddleware, addOrder);
 orderRouter.post("/rejectOrder", authMiddleware, rejectOrder);
 orderRouter.post("/approveOrder", authMiddleware, approveOrder);
-orderRouter.get("/listOrder", listOrder)
+orderRouter.get("/listOrder", listOrder);
 orderRouter.get("/findOrderByUser", authMiddleware, findOrderByUser)
 
 export default orderRouter;

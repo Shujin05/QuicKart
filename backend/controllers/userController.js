@@ -126,4 +126,67 @@ const changePassword = async (req, res) => {
     }
 };
 
-export {loginUser, registerUser, changePassword}; 
+// list all users in database
+const listAllUsers = async (req, res) => {
+    try {
+        const users = await userModel.find();
+        res.json({ success: true, data: users });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Error fetching users" });
+    }
+};
+
+// get user's information (name, email, voucherBalance)
+const getUserInfo = async (req, res) => {
+    const { userID } = req.body; 
+
+    if (!userID) {
+        return res.status(400).json({success: false, message: "Invalid input: userID is required."});
+    }
+
+    try {
+        const user = await userModel.findById(userID).select("name email voucherBalance");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found.",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: user,
+        });
+
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        return res.status(500).json({success: false, message: "An error occurred while fetching user info."});
+    }
+};
+
+// add voucher balance of users after completing tasks 
+const addVoucher = async (req, res) => {
+    const { userID } = req.body; 
+
+    if (!userID) {
+        return res.status(400).json({success: false, message: "Invalid input: userID is required."});
+    }
+
+    try {
+        const user = await userModel.findById(userID)
+
+        if (!user) {
+            return res.status(404).json({success: false, message: "User not found."});
+        }
+
+        // work on this 
+
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        return res.status(500).json({success: false, message: "An error occurred while fetching user info."});
+    }
+};
+
+export {loginUser, registerUser, changePassword, listAllUsers, getUserInfo}; 

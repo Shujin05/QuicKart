@@ -34,11 +34,11 @@ const addItem = async (req, res) => {
 const listItem = async (req, res) => {
     try {
         let items
-        if (!req.body.listQuantity) {
+        if (!req.query.listQuantity) {
             items = await itemModel.find({}); 
         }
         else {
-            listQuantity = req.body.listQuantity 
+            listQuantity = req.query.listQuantity 
             items = await itemModel.find({}).limit(listQuantity); 
         }
         res.json({success:true, data:items})

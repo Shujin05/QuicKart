@@ -1,6 +1,6 @@
 import itemModel from "../models/itemModel.js";
 import logModel from "../models/logModel.js";
-
+import { addOrder } from "./orderController.js";
 // add item 
 const addItem = async (req, res) => {
     
@@ -96,6 +96,20 @@ const updateItemQuantity = async (req, res) => {
         await log.save();
 
         res.json({ success: true, message: "Item quantity updated", data: updatedItem });
+
+        if (quantity > 0) {
+            const preorders = await preorderModel.find({itemID : itemID});
+
+        if (preorders) {
+            for (const preorder of preorders) {
+                if (item.quantity > preorder.quantityRequested) {
+                    // new order
+                    addOrder(preorder.userID, preorder.itemID, quantityRequested);
+                }
+            }
+        }
+        }
+        
     } catch (error) {
         console.error("Error updating item quantity:", error);
         res.status(500).json({ success: false, message: "Error updating item quantity", error: error.message });
@@ -103,3 +117,4 @@ const updateItemQuantity = async (req, res) => {
 };
 
 export {addItem, listItem, updateItemQuantity}; 
+

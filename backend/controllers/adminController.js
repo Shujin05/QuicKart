@@ -190,8 +190,6 @@ const suspendUser = async (req, res) => {
     }
 };
 
-export {loginAdmin, registerAdmin, changePassword, suspendUser, resetPassword};  
-
 const adminAddUser = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
@@ -211,3 +209,6 @@ const adminAddUser = async (req, res) => {
         });
     }
 }
+
+export {loginAdmin, registerAdmin, changePassword, suspendUser, resetPassword, adminAddUser};  
+

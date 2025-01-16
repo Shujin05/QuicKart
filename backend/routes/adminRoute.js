@@ -1,5 +1,5 @@
 import express from "express"
-import { changePassword, loginAdmin, registerAdmin, resetPassword, suspendUser } from "../controllers/adminController.js";
+import { adminAddUser, changePassword, loginAdmin, registerAdmin, resetPassword, suspendUser } from "../controllers/adminController.js";
 import verifyAdmin from "../middleware/adminAuth.js";
 
 const adminRouter = express.Router()

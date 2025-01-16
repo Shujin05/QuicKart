@@ -40,7 +40,6 @@ const addOrder = async (req, res) => {
             userID,
             itemID,
             quantityRequested,
-            status: "pending", // Optional: Set an initial status for the order
         });
 
         // Save the order to the database
@@ -152,8 +151,6 @@ const listOrder = async (req, res) => {
     }
 }
 
-export {addOrder, approveOrder, rejectOrder , listOrder}; 
-
 const findOrderByUser = async (req, res) => {
     const {userID} = req.body;
  
@@ -180,3 +177,5 @@ const findOrderByUser = async (req, res) => {
     }
 
 }
+
+export {addOrder, approveOrder, rejectOrder , listOrder, findOrderByUser}; 

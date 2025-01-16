@@ -15,7 +15,7 @@ const Navbar = () => {
 
     return (
         <div className="sidebar">
-            <h1 className="sidebar-title">Website</h1>
+            <h1 className="sidebar-title">Minimart</h1>
             {
                 isAdmin ? <>
                     <a href="/">Home</a>

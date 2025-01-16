@@ -34,7 +34,6 @@ const Login = () => {
                     <h1>Login</h1>
                 </div>
                 <div className="login-content">
-                    
                     <input required type="text" placeholder="email" name="email" onChange={handleChange}></input>
                     <input required type="password" placeholder="password" name="password" onChange={handleChange}></input>
                 </div>

@@ -30,14 +30,14 @@ const ManageUser = () => {
         if (modalRef) {
             if (type === "reset") {
                 modalRef.current.triggerModal({
-                    message: "You are about to reset the password of this user. Proceed?",
+                    message: "You are about to reset the password of this user. Please key in the new password below.",
                     type: type,
                     password: "",
                     confirmPassword: ""
                 });
             } else if (type === "suspend") {
                 modalRef.current.triggerModal({
-                    message: "You are about to suspend the password of this user. Proceed?",
+                    message: "You are about to suspend this user. Proceed?",
                     type: type
                 })
             }

@@ -52,7 +52,7 @@ const registerUser = async (req, res) => {
             return res.json({success:false, message:"Please enter a valid email"})
         }
 
-        if (confirmPassword != password) {
+        if (confirmPassword !== password) {
             return res.json({success:false, message:"Please ensure both passwords are the same"})
         }
 

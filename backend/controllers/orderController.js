@@ -165,7 +165,6 @@ const listOrder = async (req, res) => {
 
 const findOrderByUser = async (req, res) => {
     const {userID} = req.body;
- 
     // Validate input
     if (!userID) {
         return res.status(400).json({ message: "Invalid input: userID is required." });
@@ -192,12 +191,11 @@ const findOrderByUser = async (req, res) => {
             })
         );
 
-    } catch {
+    } catch(error) {
         console.error(error);
 
         return res.status(500).json("An error has occurred.");
     }
-
 }
 
 export {addOrder, approveOrder, rejectOrder , listOrder, findOrderByUser}; 

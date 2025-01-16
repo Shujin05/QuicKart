@@ -20,24 +20,6 @@
     color: constants.$dark-color;
 }
 
-.card {
-    border-radius: 8px;
-    background-color: constants.$primary-color;
-    padding: 16px 16px;
-    margin-bottom: 16px;
-
-    h2 {
-        margin: 0px;
-        margin-bottom: 16px;
-        padding: 0;
-        font-size: 1.5rem;
-    }
-
-    h1 {
-        margin: 0;
-    }
-}
-
 .admin-request-header {
     display: flex;
     flex-direction: row;
@@ -150,24 +132,6 @@
     padding: 16px;
     text-align: left;
     color: constants.$dark-color;
-}
-
-.card {
-    border-radius: 8px;
-    background-color: constants.$primary-color;
-    padding: 16px 16px;
-    margin-bottom: 16px;
-
-    h2 {
-        margin: 0px;
-        margin-bottom: 16px;
-        padding: 0;
-        font-size: 1.5rem;
-    }
-
-    h1 {
-        margin: 0;
-    }
 }
 
 .admin-inventory-header {

@@ -2,12 +2,8 @@ import {useState, useEffect, forwardRef, useImperativeHandle, useRef, useContext
 import axios from "axios"
 import {AuthContext} from "../context/AuthContext"
 
-const UserActionConfirm = forwardRef((props, ref) => {
-    const [modalInfo, setModalInfo] = useState({
-        message: "",
-        type: "",
-    })
-
+const AddVoucherPopUp = forwardRef((props, ref) => {
+    const [voucherCode, setVoucherCode] = useState("")
     const [error, setError] = useState("")
 
     const modalRef = useRef(null)
@@ -16,10 +12,10 @@ const UserActionConfirm = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, ()=>{
         return {
-            triggerModal(info) {
+            triggerModal() {
                 if (modalRef) {
                     modalRef.current.style.display = "block"
-                    setModalInfo(info)
+                    
                 }
             },
         }
@@ -44,35 +40,34 @@ const UserActionConfirm = forwardRef((props, ref) => {
     function closeModal() {
         if (modalRef) {
             setError("")
+            setVoucherCode("")
             modalRef.current.style.display = "none";
         }
     }
 
     function submitForm() {
-        if (modalInfo.type === "suspend") {
-            
+        if (voucherCode === "voucher") {
+            console.log("voucher added")
+            closeModal()
+        } else {
+            setError("Invalid voucher code")
         }
-        closeModal()
+        
     }
 
     function handleChange(e) {
-        setModalInfo((prev)=>({...prev, [e.target.name]: e.target.value}))
+        setVoucherCode(e.target.value)
     }
     
     return (
         <div className="modal" ref={modalRef}>
             <div className="confirm-content">
 
-                <h2>Confirm Action</h2>
-                <p>{modalInfo.message}</p>
-                {modalInfo.type === "reset" 
-                    ? <div style={{display: "flex", flexDirection: "column", marginBottom: "16px"}}>
-                    <input required type="password" placeholder="New password" name="password" onChange={handleChange}></input>
-                    <input required type="password" placeholder="Confirm password" name="confirmPassword" onChange={handleChange}></input>
-                </div> : <></>}
+                <h2>Enter Voucher Code</h2>
+                <input required type="text" placeholder="Voucher Code" name="voucherCode" onChange={handleChange}></input>
                 <p className="error-text">{error}</p>
                 <div>
-                    <button style={{marginRight: "8px"}}>Confirm</button>
+                    <button style={{marginRight: "8px"}} onClick={submitForm}>Add</button>
                     <button onClick={closeModal}>Go back</button>
                 </div>
             </div>
@@ -80,4 +75,4 @@ const UserActionConfirm = forwardRef((props, ref) => {
     )
 })
 
-export default UserActionConfirm;
+export default AddVoucherPopUp;

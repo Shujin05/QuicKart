@@ -52,7 +52,7 @@ const Requests = () => {
             <div className="product-page-header">
                 <h1>Requests</h1>
             </div>
-            <div className="transaction-table">
+            <div className="requests-table">
                 <div className="transaction-item transaction-header">
                     <p>User</p>
                     <p>Item</p>

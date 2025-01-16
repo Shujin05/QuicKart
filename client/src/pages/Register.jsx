@@ -9,7 +9,7 @@ const Register = () => {
         name: "",
         email: "",
         password: "",
-        confirm_password: ""
+        confirmPassword: ""
     })
 
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Register = () => {
                     <input required type="text" placeholder="username" name="name" onChange={handleChange}></input>
                     <input required type="text" placeholder="email" name="email" onChange={handleChange}></input>
                     <input required type="password" placeholder="password" name="password" onChange={handleChange}></input>
-                    <input required type="password" placeholder="confirm password" name="confirm_password" onChange={handleChange}></input>
+                    <input required type="password" placeholder="confirm password" name="confirmPassword" onChange={handleChange}></input>
                 </div>
                 <div className="footer">
                     <p className="error">{error} </p>

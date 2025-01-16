@@ -27,7 +27,7 @@ const Products = () => {
                             name: item.name,
                             stock: item.quantity,
                             price: item.voucherAmount,
-                            status: "out-of-stock"
+                            status: item.status
                         })
                     }
                     setProducts(newArray);

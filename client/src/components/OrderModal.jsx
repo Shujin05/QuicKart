@@ -82,19 +82,28 @@ const OrderModal = forwardRef((props, ref) => {
     }
 
     function submitOrder() {
-        const data = {
-            itemID: modalInfo.id,
-            quantityRequested: modalInfo.quantity 
+        const postData = async() => {
+            const data = {
+                itemID: modalInfo.id,
+                quantityRequested: modalInfo.quantity 
+            }
+    
+            try {
+                const res = await axios.post("api/order/addOrder", data, {headers: {token: token}})
+                if (!res.data.success) {
+                    setError(res.data.message)
+                    return;
+                } else {
+                    closeModal()
+                }
+            } catch(err) {
+                console.log(err)
+                setError(err.response.data.message)
+                
+            }
         }
-
-        try {
-            axios.post("api/order/addOrder", data, {headers: {token: token}}).then((res)=> {
-                closeModal();
-                console.log("order placed")
-            })
-        } catch(err) {
-            setError(err)
-        }
+        postData()
+        
     }
     
     return (

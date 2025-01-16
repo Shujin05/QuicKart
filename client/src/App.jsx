@@ -29,6 +29,7 @@ import "./styles/Products.scss"
 import "./styles/Transaction.scss"
 import "./styles/Inventory.scss"
 import "./styles/Users.scss"
+import "./styles/Requests.scss"
 
 
 function App() {

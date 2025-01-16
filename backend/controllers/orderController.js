@@ -136,10 +136,10 @@ const listOrder = async (req, res) => {
     try {
         let orders;
 
-        if (!req.query.listQuantity) {
+        if (!req.body.listQuantity) {
             orders = await orderModel.find({});
         } else {
-            const listQuantity = parseInt(req.query.listQuantity); 
+            const listQuantity = parseInt(req.body.listQuantity); // Ensure it's a number
             orders = await orderModel.find({}).limit(listQuantity);
         }
 
@@ -161,8 +161,7 @@ const listOrder = async (req, res) => {
         console.error(error);
         return res.status(500).json({ success: false, message: "Error fetching orders" });
     }
-};
-
+}
 const findOrderByUser = async (req, res) => {
     const {userID} = req.body;
     // Validate input
@@ -190,6 +189,8 @@ const findOrderByUser = async (req, res) => {
                 };
             })
         );
+
+        return res.status(200).json({ success: true, data: ordersWithDetails });
 
     } catch(error) {
         console.error(error);

@@ -1,0 +1,83 @@
+@use "constants";
+
+#row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 8px 32px;
+}
+
+@media screen and (max-width: 2048px) {
+    #row2 {
+        grid-template-columns: 1fr;
+    }
+  }
+
+.admin-inventory-container {
+    padding: 16px;
+    text-align: left;
+    color: constants.$dark-color;
+}
+
+.card {
+    border-radius: 8px;
+    background-color: constants.$primary-color;
+    padding: 16px 16px;
+    margin-bottom: 16px;
+
+    h2 {
+        margin: 0px;
+        margin-bottom: 16px;
+        padding: 0;
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        margin: 0;
+    }
+}
+
+.admin-inventory-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 8px;
+
+    h2 {
+        margin: 0;
+    }
+
+    h3 {
+        text-decoration: underline;
+    }
+}
+
+.inventoryList-list {
+    grid-template-rows: repeat(6, 1fr);
+
+    .inventoryList-item {
+        border-bottom: 1px solid constants.$dark-color;
+        padding: 8px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+
+        * {
+            display: flex;
+            align-items: center;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+// .quantity-status {
+//     border-radius: 16px;
+//     padding: 4px 16px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// }
+

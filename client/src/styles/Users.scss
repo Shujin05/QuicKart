@@ -1,0 +1,57 @@
+@use "constants";
+
+.user-table-item {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 1fr 2fr;
+    width: 100%;
+    border-bottom: 1px solid constants.$dark-color;
+
+    button {
+        padding: 0px 8px;
+        height: 2.8rem;
+        margin-right: 4px;
+    }
+}
+
+  .confirm-content {
+    position: relative;
+    background-color: constants.$primary-color;
+    margin: auto;
+    padding: 0;
+    width: 30%;
+    min-width: 400px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    padding: 8px 16px;
+
+    h2 {
+        margin-bottom: 4px;
+    }
+    p {
+        margin-top: 8px;
+    }
+
+    input {
+        width: 70%;
+        margin-bottom: 16px;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid constants.$dark-color;
+        padding-bottom: 4px;
+        color: constants.$dark-color;
+    }
+
+    input:focus {
+        outline: none;
+    }
+
+    .error-text {
+        color: red;
+        margin: 0;
+        margin-bottom: 4px;
+    }
+  }

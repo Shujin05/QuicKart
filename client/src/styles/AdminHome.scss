@@ -187,13 +187,13 @@
 }
 
 .inventory-list {
-    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-rows: repeat(5, 1fr);
 
     .inventory-item {
         border-bottom: 1px solid constants.$dark-color;
         padding: 8px;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
 
         * {
             display: flex;

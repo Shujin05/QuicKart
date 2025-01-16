@@ -1,6 +1,6 @@
-import {
-  
-} from "react-router-dom";
+import {useEffect, useContext, useState} from "react"
+import axios from "axios"
+import {AuthContext} from "../context/AuthContext"
 
 const RequestStatus = (props) => {
     return (
@@ -19,6 +19,45 @@ const QuantityStatus = (props) => {
 }
     
 function AdminHome(){
+    const [orders, setOrders] = useState([])
+    const [inventory, setInventory] = useState([])
+    const {token} = useContext(AuthContext)
+    useEffect(()=> {
+        const fetchData = async() => {
+            const req = await axios.get("api/order/listOrder", {header: {token: token}})
+            if (req.data.success) {
+                const data = req.data.data;
+                const newArray = []
+                for (let item of data) {
+                    newArray.push({
+                        id: item._id,
+                        user: item.userID,
+                        product: item.itemID,
+                        status: item.status
+                    })
+                }
+                setOrders (newArray)
+            }
+
+            const inv = await axios.get("api/item/list", {header: {token: token}})
+            if (inv.data.success) {
+                const data = inv.data.data;
+                console.log(data)
+                const newArray1 = []
+                for (let item of data) {
+                    newArray1.push({
+                        id: item._id,
+                        name: item.name,
+                        price: item.voucherAmount,
+                        quantity: item.quantity,
+                        status: item.status
+                    })
+                }
+                setInventory (newArray1)
+            }
+        }
+        fetchData();
+    }, [])
     return (
     <div className="admin-container">
       <div className="admin-header">
@@ -31,6 +70,7 @@ function AdminHome(){
           <p>View the summary of requests submitted this week.</p>
           <div id="row1">
                 <div className="request-list">
+                    
                     <div className="request-item">
                         <b>User</b>
                         <b>Product</b>
@@ -38,48 +78,17 @@ function AdminHome(){
                         <b>Request Date</b>
                         <b>Status</b>
                     </div>
-                    <div className="request-item">
-                        <p>User A</p>
-                        <p>Item 1</p>
-                        <p>10 Credits</p>
-                        <p>01/01/2025</p>
-                        <button style={{ backgroundColor: 'green', color: 'black', padding: '2px' }}
-                            onClick={() => alert('Request Approved!')}>                     
-                            Approved
-                        </button>
-                        <button style={{ backgroundColor: 'red', color: 'black', padding: '2px' }}
-                            onClick={() => alert('Request Rejected!')}>                     
-                            Rejected
-                        </button>
-                    </div>
-                    <div className="request-item">
-                        <p>User B</p>                            
-                        <p>Item 2</p>
-                        <p>8 Credits</p>
-                        <p>02/01/2025</p>
-                        <button style={{ backgroundColor: 'green', color: 'black', padding: '2px' }}
-                            onClick={() => alert('Request Approved!')}>                     
-                            Approved
-                        </button>
-                        <button style={{ backgroundColor: 'red', color: 'black', padding: '2px' }}
-                            onClick={() => alert('Request Rejected!')}>                     
-                            Rejected
-                        </button>
-                    </div>
-                    <div className="request-item">
-                        <p>User C</p>
-                        <p>Item 3</p>
-                        <p>12 Credits</p>
-                        <p>04/01/2025</p>
-                        <button style={{ backgroundColor: 'green', color: 'black', padding: '2px' }}
-                            onClick={() => alert('Request Approved!')}>                     
-                            Approved
-                        </button>
-                        <button style={{ backgroundColor: 'red', color: 'black', padding: '2px' }}
-                            onClick={() => alert('Request Rejected!')}>                     
-                            Rejected
-                        </button>
-                    </div>
+                    {orders.map((order)=> {
+                        return (
+                            <div key={order.id} className="request-item">
+                                <b>{order.user}</b>
+                                <b>{order.product}</b>
+                                <b>Price</b>
+                                <b>Request Date</b>
+                                <b>{order.status}</b>
+                            </div>
+                        )
+                    })}
                 </div>
                 <div className="admin-request-header">   
                     <a href="/transactions">{"View All >"}</a>
@@ -92,39 +101,26 @@ function AdminHome(){
           <h2>Inventory Summary</h2>
           <p>Check the current inventory status at a glance.</p>
           <div id="row2">
-                <div className="inventory-list">
+          <div className="inventory-list">
+                    
                     <div className="inventory-item">
-                        <b>Product</b>
+                        <b>ID</b>
+                        <b>Name</b>
                         <b>Price</b>
                         <b>Quantity</b>
-                        <b>Restock Date</b>
+                        <b>Status</b>
                     </div>
-                    <div className="inventory-item">
-                        <p>Item 1</p>
-                        <p>10 Credits</p>
-                        <div style={{display: "flex"}}>
-                                <QuantityStatus status="moderate"/>                        </div>
-                        <p>12/01/2025</p>
-                        
-                    </div>
-                    <div className="inventory-item">
-                        <p>Item 2</p>                            
-                        <p>8 Credits</p>
-                        <div style={{display: "flex"}}>
-                                <QuantityStatus status="high"/>
-                        </div>
-                        <p>02/02/2025</p>
-
-                    </div>
-                    <div className="inventory-item">
-                        <p>Item 3</p>
-                        <p>12 Credits</p>
-                        <div style={{display: "flex"}}>
-                                <QuantityStatus status="low"/>
-                        </div>
-                        <p>27/01/2025</p>
-
-                    </div>
+                    {inventory.map((item)=> {
+                        return (
+                            <div key={item.id} className="inventory-item">
+                                <b>{item.id}</b>
+                                <b>{item.name}</b>
+                                <b>{item.price}</b>
+                                <b>{item.quantity}</b>
+                                <b>{item.status}</b>
+                            </div>
+                        )
+                    })}
                 </div>
                 <div className="inventory-header">   
                     <a href="/inventory">{"View All >"}</a>

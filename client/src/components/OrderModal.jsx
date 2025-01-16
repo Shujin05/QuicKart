@@ -100,7 +100,7 @@ const OrderModal = forwardRef((props, ref) => {
     return (
         <div className="modal" ref={modalRef}>
             <div className="modal-content">
-                <img src="/milo.jpg" alt="milo" className={props.status}></img>
+                <img src="/milo.jpg" alt="milo" className={modalInfo.status}></img>
                 <div className="modal-description">
                     <h2>{modalInfo.name}</h2>
                     <p><b>Price: {modalInfo.price} credits</b></p>

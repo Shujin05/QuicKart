@@ -31,9 +31,18 @@ const addOrder = async (req, res) => {
             return res.status(400).json({ success: false, message: "Insufficient voucher balance." });
         }
 
+        // check if item balance is sufficient 
+        if (item.homepageQuantity < quantityRequested) {
+            return res.status(400).json({ success: false, message: "Quantity of items requested exceeds available stock." });
+        }
+
         // Deduct voucher balance from the user
         user.voucherBalance -= totalPrice;
         await user.save();
+
+        // Deduct home page quantity 
+        item.homepageQuantity -= quantityRequested; 
+        await item.save(); 
 
         // Create a new order
         const newOrder = new orderModel({
@@ -66,7 +75,7 @@ const approveOrder = async (req, res) => {
     }
 
     try {
-        const order = await orderModel.findById(orderID)
+        const order = await orderModel.findById(orderID); 
 
         if (!order) {
             return res.status(404).json({ message: "Error, order not found." });
@@ -76,6 +85,12 @@ const approveOrder = async (req, res) => {
             orderID,
             { status: "approved" },
         )
+
+        // deduct quantity from stock 
+        const item = await itemModel.findById(order.itemID); 
+        item.quantity -= order.quantityRequested; 
+
+        await item.save();
 
         return res.json({ message: "Order has been approved", order });
 
@@ -94,7 +109,7 @@ const rejectOrder = async (req, res) => {
     }
 
     try {
-        const order = orderModel.findById(req.body.orderID)
+        const order = orderModel.findById(req.body.orderID); 
 
         if (!order) {
             return res.status(404).json({ message: "Error, order not found." });
@@ -123,6 +138,10 @@ const rejectOrder = async (req, res) => {
         // Update the order status to "rejected"
         order.status = "rejected";
         await order.save();
+
+        // update item homepage quantity  
+        item.homepageQuantityquantity += order.quantityRequested; 
+        await item.save();
 
         return res.json({ message: "Order has been rejected", order });
 

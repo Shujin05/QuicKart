@@ -1,6 +1,7 @@
 import logModel from "../models/logModel.js";
+import adminModel from "../models/adminModel.js";
+import itemModel from "../models/itemModel.js";
 
-// Get logs of admin actions (timeframe: 1 week ago)
 const getLogs = async (req, res) => {
     try {
         // Calculate the date one week ago
@@ -8,14 +9,26 @@ const getLogs = async (req, res) => {
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
         // Query logs created within the last week
-        const logs = await logModel.find({
-            timestamp: { $gte: oneWeekAgo },
-        });
+        const logs = await logModel.find({ timestamp: { $gte: oneWeekAgo } });
 
-        res.json({ success: true, data: logs });
+        // Fetch admin and item names for each log
+        const logsWithDetails = await Promise.all(
+            logs.map(async (log) => {
+                const admin = await adminModel.findById(log.adminID).select("name");
+                const item = await itemModel.findById(log.itemID).select("name");
+                return {
+                    ...log._doc,
+                    adminName: admin ? admin.name : "Unknown Admin",
+                    itemName: item ? item.name : "Unknown Item",
+                };
+            })
+        );
+
+        res.json({ success: true, data: logsWithDetails });
     } catch (error) {
         console.error(error);
-        res.json({ success: false, message: "Error fetching logs" });
+        res.status(500).json({ success: false, message: "Error fetching logs" });
     }
 };
-export {getLogs}; 
+
+export { getLogs };

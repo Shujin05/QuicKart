@@ -79,7 +79,7 @@ const updateItemQuantity = async (req, res) => {
         const log = new logModel({
             adminID: req.body.adminID,
             action: "update quantity", 
-            itemId: updatedItem.id 
+            itemId: updatedItem._id 
          })
          await log.save(); 
 

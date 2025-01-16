@@ -194,7 +194,7 @@ const adminAddUser = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
     try {
-        registerUser(name, email, password, confirmPassword);
+        await registerUser(name, email, password, confirmPassword);
 
         res.json({
             success: true,

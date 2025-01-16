@@ -132,24 +132,36 @@ const rejectOrder = async (req, res) => {
     }
 };
 
-// list all order 
 const listOrder = async (req, res) => {
     try {
-        let orders; 
+        let orders;
+
         if (!req.body.listQuantity) {
             orders = await orderModel.find({});
-        }
-        else {
-            listQuantity = req.body.listQuantity 
+        } else {
+            const listQuantity = parseInt(req.body.listQuantity); // Ensure it's a number
             orders = await orderModel.find({}).limit(listQuantity);
-
         }
-        res.json({success:true, data: orders})
+
+        // Map orders and fetch user/item details
+        const ordersWithDetails = await Promise.all(
+            orders.map(async (order) => {
+                const user = await userModel.findById(order.userID).select("name");
+                const item = await itemModel.findById(order.itemID).select("name");
+                return {
+                    ...order._doc, // Spread order fields
+                    userName: user ? user.name : "Unknown User",
+                    itemName: item ? item.name : "Unknown Item",
+                };
+            })
+        );
+
+        return res.status(200).json({ success: true, data: ordersWithDetails });
     } catch (error) {
-        console.log(error);
-        res.json({success:false, message:"Error"})
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Error fetching orders" });
     }
-}
+};
 
 const findOrderByUser = async (req, res) => {
     const {userID} = req.body;
@@ -167,9 +179,19 @@ const findOrderByUser = async (req, res) => {
             return res.status(404).json({ message: "No orders found for this user." });
         }
 
-        else {
-            return res.json({success: true, orders});
-        }
+        // Map orders and fetch user/item details
+        const ordersWithDetails = await Promise.all(
+            orders.map(async (order) => {
+                const user = await userModel.findById(order.userID).select("name");
+                const item = await itemModel.findById(order.itemID).select("name");
+                return {
+                    ...order._doc, // Spread order fields
+                    userName: user ? user.name : "Unknown User",
+                    itemName: item ? item.name : "Unknown Item",
+                };
+            })
+        );
+
     } catch {
         console.error(error);
 

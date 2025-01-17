@@ -102,10 +102,10 @@ const listOrder = async (req, res) => {
     try {
         let orders;
 
-        if (!req.body.listQuantity) {
+        if (!req.query.listQuantity) {
             orders = await orderModel.find({}).sort({ createdAt: -1 });
         } else {
-            const listQuantity = parseInt(req.body.listQuantity); // Ensure it's a number
+            const listQuantity = parseInt(req.query.listQuantity); // Ensure it's a number
             orders = await orderModel.find({}).sort({ createdAt: -1 }).limit(listQuantity);
         }
 

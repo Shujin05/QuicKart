@@ -92,7 +92,9 @@ function AdminHome(){
                     <div className="request-item">
                         <b>User</b>
                         <b>Product</b>
+                        <b>Quantity</b>
                         <b>Price</b>
+                        <b>Total Price</b>
                         <b>Request Date</b>
                     </div>
                     {orders.map((order)=> {

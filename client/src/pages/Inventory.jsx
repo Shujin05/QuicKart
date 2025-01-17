@@ -2,6 +2,8 @@ import { useState, useRef, useContext, useEffect } from "react"
 import AddOrderPopUp from "../components/AddOrderPopUp"
 import axios from "axios"
 import {AuthContext} from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
+import useToast from "../hooks/useToast"
 
 
 const Inventory = () => {
@@ -16,7 +18,8 @@ const Inventory = () => {
                     stock: item.quantity,
                     price: item.price,
                     quantity: item.quantity,
-                    status: item.status
+                    status: item.status,
+                    imagePath: item.imagePath
                 });
                 return;
             }
@@ -24,9 +27,26 @@ const Inventory = () => {
         
     }
     const [inventory, setInventory] = useState([])
-    const { token } = useContext(AuthContext)
+    const [refresh, setRefresh] = useState(true);
+    const { token, isAdmin } = useContext(AuthContext)
+    const {toastSuccess, toastError} = useToast();
+    const navigate = useNavigate();
+
     useEffect(() => {
+        if (!refresh) return;
+        if (!token) {
+            toastError("Log in as admin to access this page")
+            navigate("/login")
+            return
+        }
+
+        if (!isAdmin) {
+            toastError("Log in as admin to access this page")
+            navigate("/")
+            return
+        }
         const fetchData = async () => {
+            setRefresh(false)
             const inv = await axios.get("api/item/list", { header: { token: token } })
             if (inv.data.success) {
                 const data = inv.data.data;
@@ -38,14 +58,20 @@ const Inventory = () => {
                         name: item.name,
                         price: item.voucherAmount,
                         quantity: item.quantity,
-                        status: item.status
+                        homepageQuantity: item.homepageQuantity,
+                        status: item.status,
+                        imagePath: item.image
                     })
                 }
                 setInventory(newArray1)
             }
         }
         fetchData();
-    }, [])
+    }, [refresh])
+
+    function refreshPage() {
+        setRefresh(true);
+    }
     return (
         <>
         <div className="inventoryList-section">
@@ -55,23 +81,23 @@ const Inventory = () => {
                 <div className="inventoryList-list">
 
                     <div className="inventoryList-item">
-                        <b>ID</b>
                         <b>Name</b>
                         <b>Price</b>
                         <b>Quantity</b>
+                        <b>Projected Quantity</b>
                         <b>Status</b>
-                        <b>Status Update</b>
+                        <b>Actions</b>
                     </div>
                     {inventory.map((item)=> {
                         return (
                             <div key={item.id} className="inventoryList-item">
-                                <b>{item.id}</b>
                                 <b>{item.name}</b>
                                 <b>{item.price}</b>
                                 <b>{item.quantity}</b>
+                                <b>{item.homepageQuantity}</b>
                                 <b>{item.status}</b>
                                 <button onClick={()=>triggerModal(item.id)}>
-                                    Update Status
+                                    Update Quantity
                                 </button>
                             </div>
                         )
@@ -83,7 +109,7 @@ const Inventory = () => {
     <div className="inventoryList-footer">
         <p>© 2025 Your Company. All rights reserved.</p>
     </div>
-    <AddOrderPopUp ref={modalRef}/>
+    <AddOrderPopUp ref={modalRef} refresh={refreshPage}/>
     </>
         
     )

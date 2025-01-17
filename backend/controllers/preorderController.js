@@ -14,7 +14,7 @@ const addPreorder = async (req, res) => {
 
     await newPreorder.save();
 
-    return res.json({message: "You have placed a preorder request."});
+    return res.json({success: true, message: "You have placed a preorder request."});
 }
 
 const listPreorder = async (req, res) => {

@@ -1,16 +1,22 @@
-import {useState, useEffect, forwardRef, useImperativeHandle, useRef} from "react"
+import {useState, useEffect, forwardRef, useImperativeHandle, useRef, useContext} from "react"
+import axios from "axios"
+import useToast from "../hooks/useToast"
+import {AuthContext} from "../context/AuthContext"
 
 const OrderModal = forwardRef((props, ref) => {
     const [modalInfo, setModalInfo] = useState({
-        id: -1,
+        id: "",
         name: "",
         stock: 0,
         price: 10,
         quantity: 1,
-        status: ""
+        status: "",
+        imagePath: ""
     })
 
     const modalRef = useRef(null)
+    const {toastSuccess, toastError} = useToast()
+    const {token} = useContext(AuthContext)
 
     useImperativeHandle(ref, ()=>{
         return {
@@ -57,14 +63,33 @@ const OrderModal = forwardRef((props, ref) => {
     }
 
     function submitOrder() {
-        console.log("submit order")
-        closeModal()
+        const postData = async() => {
+            const data = {
+                itemID: modalInfo.id,
+                quantity: modalInfo.quantity - modalInfo.stock
+            }
+            try {
+                const res = await axios.post("api/item/updateQuantity", data, {headers: {token: token}})
+                if (!res.data.success) {
+                    toastError("Something went wrong")
+                    return
+                } else {
+                    toastSuccess("Updated item quantity")
+                    props.refresh()
+                    closeModal();
+                }
+            } catch(err) {
+                console.log(err)
+                toastError("Something went wrong")
+            }
+        }
+        postData();
     }
     
     return (
         <div className="modal" ref={modalRef}>
             <div className="modal-content">
-                <img src="/milo.jpg" alt="milo"></img>
+                <img src={modalInfo.imagePath} alt={modalInfo.name}></img>
                 <div className="modal-description">
                     <h2>{modalInfo.name}</h2>
                     <p><b>Stock: {modalInfo.stock}</b></p>

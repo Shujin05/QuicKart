@@ -54,16 +54,13 @@ QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah 
 ```bash  
    npm install  
    ```
-3. Set up environment variables:
-- Create a .env file in the root directory.
-- Add your MongoDB connection string
 
-4. Start backend server
+3. Start backend server
  ```bash
    cd backend
    npm run start  
    ```
-5. Run the webpage
+4. Run the webpage
  ```bash
    cd client
    npm run dev  

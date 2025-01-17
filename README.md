@@ -60,7 +60,20 @@ QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah 
    cd backend
    npm run start  
    ```
-4. Run the webpage
+   
+4. Ensure Vite is installed
+   run: 
+    ```bash
+   cd client
+   npm list vite  
+   ```
+
+    If it doesn't show Vite as a dependecy, install Vite by running:
+   ```bash
+   npm install vite  
+   ```
+
+6. Run the webpage
     ```bash
    cd client
    npm run dev  

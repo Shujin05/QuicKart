@@ -47,5 +47,26 @@ QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah 
 1. Clone the repository:  
    ```bash  
    git clone <repository-url>  
-   cd quic-kart  
+   cd quickart
+   ```
+
+2. Install dependencies:
+```bash  
+   npm install  
+   ```
+3. Set up environment variables:
+- Create a .env file in the root directory.
+- Add your MongoDB connection string
+
+4. Start backend server
+ ```bash
+   cd backend
+   npm run start  
+   ```
+5. Run the webpage
+ ```bash
+   cd client
+   npm run dev  
+   ```
+
 

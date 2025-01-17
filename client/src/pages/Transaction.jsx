@@ -36,7 +36,7 @@ const Transaction = () => {
             }
         }
         fetchData();
-    })
+    }, [])
     return (
         <div className="product-page-container">
             <div className="product-page-header">

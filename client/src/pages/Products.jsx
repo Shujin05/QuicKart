@@ -7,6 +7,7 @@ import axios from "axios"
 
 const Products = () => {
     const [products, setProducts] = useState([]);
+    const [refresh, setRefresh] = useState(true)
     const {token} = useContext(AuthContext)
     const navigate = useNavigate();
 
@@ -16,7 +17,10 @@ const Products = () => {
                 navigate("/login")
                 return;
             }
+
+            if (!refresh) return;
             try {
+                setRefresh(false)
                 const res = await axios.get("api/item/list", {headers: {token: token}})
                 if (res.data.success) {
                     const data = res.data.data;
@@ -39,7 +43,7 @@ const Products = () => {
             }
         }
         fetchData();
-    }, [token])
+    }, [token, refresh])
     
     const modalRef = useRef(null);
 
@@ -61,6 +65,10 @@ const Products = () => {
         
     }
 
+    function refreshPage() {
+        setRefresh(true);
+    }
+
     return (
         <div className="product-page-container">
             <div className="product-page-header">
@@ -75,7 +83,8 @@ const Products = () => {
                         price={item.price}
                         stock={item.stock}
                         status={item.status}
-                        triggerModal={triggerModal}/>
+                        triggerModal={triggerModal}
+                        refresh={refreshPage}/>
                 })}
             </div>
             <OrderModal ref={modalRef}/>

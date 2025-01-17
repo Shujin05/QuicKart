@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom"
 const Requests = () => {
     const [requests, setRequests] = useState([]);
     const [summary, setSummary] = useState([])
+    const [refresh, setRefresh] = useState(true);
     const {token, isAdmin} = useContext(AuthContext)
 
     const timeZoneParams = {
@@ -26,7 +27,10 @@ const Requests = () => {
     //const formattedDate = date.toLocaleDateString("en-US", );
       
     useEffect(()=> {
+        
         const fetchData = async() => {
+            if (!refresh) return;
+
             if (!token) {
                 toastError("Log in as admin to access this page")
                 navigate("/login")
@@ -38,39 +42,65 @@ const Requests = () => {
                 navigate("/")
                 return
             }
-    
-            const res = await axios.get("api/order/listOrder", {header: {token: token}})
-            if (res.data.success) {
-                const data = res.data.data;
-                const newArray = []
-                console.log(data)
-                for (let item of data) {
-                    newArray.push({
-                        id: item._id,
-                        user: item.userName,
-                        item: item.itemName,
-                        quantity: item.quantityRequested,
-                        price: item.itemPrice,
-                        date: formatDate(item.createdAt)
-                    })
-                }
-                setRequests(newArray);
-
-                const summarizedOrders = newArray.reduce((summary, order) => {
-                    const existingItem = summary.find(item => item.itemName === order.item);
-                    if (existingItem) {
-                        existingItem.quantity += order.quantity;
-                    } else {
-                        summary.push({ itemName: order.item, quantity: order.quantity });
+            
+            try {
+                const res = await axios.get("api/order/listOrder", {header: {token: token}})
+                if (res.data.success) {
+                    const data = res.data.data;
+                    const newArray = []
+                    console.log(data)
+                    for (let item of data) {
+                        newArray.push({
+                            id: item._id,
+                            user: item.userName,
+                            item: item.itemName,
+                            quantity: item.quantityRequested,
+                            price: item.itemPrice,
+                            date: formatDate(item.createdAt),
+                            status: item.status
+                        })
                     }
-                    return summary;
-                }, []);
-                console.log(summarizedOrders)
-                setSummary(summarizedOrders)
+                    setRequests(newArray);
+
+                    const summarizedOrders = newArray.reduce((summary, order) => {
+                        const existingItem = summary.find(item => item.itemName === order.item);
+                        if (existingItem) {
+                            existingItem.quantity += order.quantity;
+                        } else {
+                            summary.push({ itemName: order.item, quantity: order.quantity });
+                        }
+                        return summary;
+                    }, []);
+                    console.log(summarizedOrders)
+                    setSummary(summarizedOrders)
+                }
+            } catch(err) {
+
             }
+            
         }
         fetchData()
     }, [])
+
+    function markAsDelivered(id) {
+        const postData = async() => {
+            try {
+                const res = await axios.post("api/order/deliverOrder", {orderID: id}, {headers: {token: token}})
+                if (!res.data.success) {
+                    toastError("Something went wrong")
+                    console.log(res.data)
+                    return;
+                } else {
+                    toastSuccess("Marked as delivered")
+
+                }
+            } catch(err) {
+                toastError("Something went wrong!");
+                console.log(err)
+            }
+        }
+        postData()
+    }
     return (
         <div className="product-page-container">
             <div className="product-page-header">
@@ -99,16 +129,24 @@ const Requests = () => {
                     <p>Price</p>
                     <p>Total Price</p>
                     <p>Order created</p>
+                    <p>Action</p>
                 </div>
                 {requests.map((request) => {
                     return (
                         <div key={request.id} className="transaction-item">
-                            <p>{request.user}</p>
-                            <p>{request.item}</p>
-                            <p>{request.quantity}</p>
-                            <p>{request.price} credits</p>
-                            <p>{request.price * request.quantity} credits</p>
-                            <p>{request.date}</p>
+                            <div><p>{request.user}</p></div>
+                            <div><p>{request.item}</p></div>
+                            <div><p>{request.quantity}</p></div>    
+                            <div><p>{request.price} credits</p></div>    
+                            <div><p>{request.price * request.quantity} credits</p></div>  
+                            <div><p>{request.date}</p></div>    
+                            <div style={{display: "flex"}}>
+                                {request.status === "pending" ?
+                                    <button onClick={()=>markAsDelivered(request.id)}>Mark As Delivered</button> :
+                                    <button style={{backgroundColor: "grey"}}>Delivered</button>}
+                                
+                            </div>
+                            
                         </div>
                     )
                 })}

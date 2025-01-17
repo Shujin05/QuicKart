@@ -90,7 +90,7 @@ const deliverOrder = async (req, res) => {
 
         await item.save();
 
-        return res.json({ message: "Order has been delivered", order });
+        return res.json({ success: true, message: "Order has been delivered", order });
 
     } catch (error) {
         console.error("Error updating order:", error); // Log error

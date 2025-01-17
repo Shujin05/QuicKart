@@ -51,17 +51,17 @@ QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah 
    ```
 
 2. Install dependencies:
-```bash  
+   ```bash  
    npm install  
    ```
 
 3. Start backend server
- ```bash
+   ```bash
    cd backend
    npm run start  
    ```
 4. Run the webpage
- ```bash
+    ```bash
    cd client
    npm run dev  
    ```

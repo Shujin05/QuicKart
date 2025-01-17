@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
     createdAt: {type:Date, default:Date.now}, 
     itemID: {type:String, required:true}, 
     quantityRequested: {type: Number, required: true},
-    status: {type: String, default: "pending"}, // approved, rejected, pending
+    status: {type: String, default: "pending"}, // delivered, pending
 });
 
 const orderModel = mongoose.models.order || mongoose.model("order", orderSchema); 

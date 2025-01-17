@@ -66,7 +66,7 @@ const addOrder = async (req, res) => {
     }
 };
 
-const approveOrder = async (req, res) => {
+const deliverOrder = async (req, res) => {
     const { orderID } = req.body;
 
     // Validate inputs
@@ -81,7 +81,7 @@ const approveOrder = async (req, res) => {
             return res.status(404).json({ message: "Error, order not found." });
         }
 
-        order.status = "approved";
+        order.status = "delivered";
         await order.save(); 
 
         // deduct quantity from stock 
@@ -90,58 +90,7 @@ const approveOrder = async (req, res) => {
 
         await item.save();
 
-        return res.json({ message: "Order has been approved", order });
-
-    } catch (error) {
-        console.error("Error updating order:", error); // Log error
-        res.status(500).json({ message: "Error updating order status", error });
-    }
-};
-
-const rejectOrder = async (req, res) => {
-    const { orderID } = req.body;
-
-    // Validate inputs
-    if (!orderID) {
-        return res.status(400).json({ message: "Invalid input: orderID is required." });
-    }
-
-    try {
-        const order = orderModel.findById(req.body.orderID); 
-
-        if (!order) {
-            return res.status(404).json({ message: "Error, order not found." });
-        }
-
-        // Fetch the item related to the order
-        const item = await itemModel.findById(order.itemID);
-        if (!item) {
-            return res.status(404).json({ message: "Error: Item not found." });
-        }
-
-        // Calculate total price to return
-        const quantityRequested = order.quantityRequested;
-        const totalPrice = item.voucherAmount * quantityRequested;
-
-        // Fetch the user and update voucher balance
-        const user = await userModel.findById(order.userID);
-        if (!user) {
-            return res.status(404).json({ message: "Error: User not found." });
-        }
-
-        // Update the user's voucher balance
-        user.voucherBalance += totalPrice; // Assumes voucherBalance is a number
-        await user.save();
-
-        // Update the order status to "rejected"
-        order.status = "rejected";
-        await order.save();
-
-        // update item homepage quantity  
-        item.homepageQuantityquantity += order.quantityRequested; 
-        await item.save();
-
-        return res.json({ message: "Order has been rejected", order });
+        return res.json({ message: "Order has been delivered", order });
 
     } catch (error) {
         console.error("Error updating order:", error); // Log error
@@ -218,4 +167,4 @@ const findOrderByUser = async (req, res) => {
     }
 }
 
-export {addOrder, approveOrder, rejectOrder , listOrder, findOrderByUser}; 
+export {addOrder, deliverOrder , listOrder, findOrderByUser}; 

@@ -55,7 +55,7 @@ const addOrder = async (req, res) => {
         await newOrder.save();
 
         // Return success response
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
             message: "Your order is pending approval.",
             order: newOrder,
@@ -81,10 +81,8 @@ const approveOrder = async (req, res) => {
             return res.status(404).json({ message: "Error, order not found." });
         }
 
-        await orderModel.findByIdAndUpdate(
-            orderID,
-            { status: "approved" },
-        )
+        order.status = "approved";
+        await order.save(); 
 
         // deduct quantity from stock 
         const item = await itemModel.findById(order.itemID); 

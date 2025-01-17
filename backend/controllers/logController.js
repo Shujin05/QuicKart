@@ -9,7 +9,7 @@ const getLogs = async (req, res) => {
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
         // Query logs created within the last week
-        const logs = await logModel.find({ timestamp: { $gte: oneWeekAgo } });
+        const logs = await logModel.find({ timestamp: { $gte: oneWeekAgo } }).sort({ createdAt: -1 });
 
         // Fetch admin and item names for each log
         const logsWithDetails = await Promise.all(

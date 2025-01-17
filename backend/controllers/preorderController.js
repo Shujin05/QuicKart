@@ -2,20 +2,35 @@ import itemModel from "../models/itemModel.js";
 import preorderModel from "../models/preorderModel.js";
 import userModel from "../models/userModel.js";
 
-// add preorder to database
+// Add preorder to the database
 const addPreorder = async (req, res) => {
-    const { userID, itemID, quantityRequested } = req.body; 
-    
-    const newPreorder = new preorderModel({
-        userID: userID,
-        itemID: itemID,
-        quantityRequested: quantityRequested
-    });
+    try {
+        const { userID, itemID, quantityRequested } = req.body;
 
-    await newPreorder.save();
+        // Create a new preorder instance
+        const newPreorder = new preorderModel({
+            userID,
+            itemID,
+            quantityRequested
+        });
 
-    return res.json({success: true, message: "You have placed a preorder request."});
-}
+        // Save the preorder to the database
+        await newPreorder.save();
+
+        // Respond with success
+        return res.status(200).json({
+            success: true,
+            message: "You have placed a preorder request."
+        });
+    } catch (error) {
+        // Log the error and respond with failure
+        console.error("Error creating preorder:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error creating preorder"
+        });
+    }
+};
 
 const listPreorder = async (req, res) => {
     try {

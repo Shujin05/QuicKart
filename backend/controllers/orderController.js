@@ -71,14 +71,14 @@ const deliverOrder = async (req, res) => {
 
     // Validate inputs
     if (!orderID) {
-        return res.status(400).json({ message: "Invalid input: orderID is required." });
+        return res.status(400).json({ success: false, message: "Invalid input: orderID is required." });
     }
 
     try {
         const order = await orderModel.findById(orderID); 
 
         if (!order) {
-            return res.status(404).json({ message: "Error, order not found." });
+            return res.status(404).json({ success: false, message: "Error, order not found." });
         }
 
         order.status = "delivered";
@@ -94,7 +94,7 @@ const deliverOrder = async (req, res) => {
 
     } catch (error) {
         console.error("Error updating order:", error); // Log error
-        res.status(500).json({ message: "Error updating order status", error });
+        res.status(500).json({ success: false, message: "Error updating order status", error });
     }
 };
 
@@ -103,10 +103,10 @@ const listOrder = async (req, res) => {
         let orders;
 
         if (!req.body.listQuantity) {
-            orders = await orderModel.find({});
+            orders = await orderModel.find({}).sort({ createdAt: -1 });
         } else {
             const listQuantity = parseInt(req.body.listQuantity); // Ensure it's a number
-            orders = await orderModel.find({}).limit(listQuantity);
+            orders = await orderModel.find({}).sort({ createdAt: -1 }).limit(listQuantity);
         }
 
         // Map orders and fetch user/item details
@@ -129,19 +129,20 @@ const listOrder = async (req, res) => {
         return res.status(500).json({ success: false, message: "Error fetching orders" });
     }
 }
+
 const findOrderByUser = async (req, res) => {
     const {userID} = req.body;
     // Validate input
     if (!userID) {
-        return res.status(400).json({ message: "Invalid input: userID is required." });
+        return res.status(400).json({ success: false, message: "Invalid input: userID is required." });
     }
 
     try {
-        const orders = await orderModel.find({userID: userID});
+        const orders = await orderModel.find({userID: userID}).sort({ createdAt: -1 });
 
         // Check if orders are found
         if (!orders) {
-            return res.status(404).json({ message: "No orders found for this user." });
+            return res.status(404).json({ success: false, message: "No orders found for this user." });
         }
 
         // Map orders and fetch user/item details
@@ -163,7 +164,7 @@ const findOrderByUser = async (req, res) => {
     } catch(error) {
         console.error(error);
 
-        return res.status(500).json("An error has occurred.");
+        return res.status(500).json({ success: false, message: "An error has occured" });
     }
 }
 

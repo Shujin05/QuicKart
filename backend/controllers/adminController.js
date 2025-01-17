@@ -140,7 +140,7 @@ const resetPassword = async (req, res) => {
         }
 
         if (confirmPassword != newPassword) {
-            return res.json({success:false, message:"Please ensure both passwords are the same"})
+            return res.json({success: false, message:"Please ensure both passwords are the same"})
         }
 
         // Hash the new password

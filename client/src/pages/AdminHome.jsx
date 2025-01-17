@@ -41,7 +41,7 @@ function AdminHome(){
     const {token} = useContext(AuthContext)
     useEffect(()=> {
         const fetchData = async() => {
-            const req = await axios.get("api/order/listOrder?listQuantity=6", {header: {token: token}})
+            const req = await axios.get("api/order/listOrder?limitQuantity=6", {header: {token: token}})
             if (req.data.success) {
                 const data = req.data.data;
                 const newArray = []
@@ -114,7 +114,7 @@ function AdminHome(){
                 </div>
                 {orders.length > 0 
                     ? <div className="admin-request-header">   
-                        <a href="/requests">{"View All >"}</a>
+                        <a href="/transactions">{"View All >"}</a>
                     </div> 
                     : <></>}
                 

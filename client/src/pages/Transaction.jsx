@@ -4,7 +4,6 @@ import OrderStatus from "../components/OrderStatus"
 import {AuthContext} from "../context/AuthContext"
 import axios from "axios"
 import {formatDate} from "../util.js"
-import preorderModel from "../../../backend/models/preorderModel.js"
 
 const Delivered = () => {
     return (
@@ -68,7 +67,6 @@ const Transaction = () => {
                             <p>Item</p>
                             <p>Quantity</p>
                             <p>Price</p>
-                            <p>Total Price</p>
                             <p>Order created</p>
                             <p>Status</p>
                         </div>
@@ -77,7 +75,6 @@ const Transaction = () => {
                                 <div><p>{order.item}</p></div>
                                 <div><p>{order.quantity}</p></div>
                                 <div><p>{order.price} credits</p></div>
-                                <div><p>{order.price * order.quantity}</p></div>
                                 <div><p>{order.date}</p></div>
                                 <div style={{display: "flex"}}>
                                     {order.status === "delivered" ? 

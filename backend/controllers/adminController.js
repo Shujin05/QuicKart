@@ -123,7 +123,6 @@ const changePassword = async (req, res) => {
     }
 };
 
-
 // Admin reset user password function - current password not required
 const resetPassword = async (req, res) => {
     const { userEmail, newPassword, confirmPassword } = req.body;
@@ -190,6 +189,37 @@ const suspendUser = async (req, res) => {
     }
 };
 
+// Reactivate user function
+const reactivateUser = async (req, res) => {
+    const { userEmail } = req.body;
+
+    try {
+        // Find the user to be suspended
+        const user = await userModel.findOne({ email: userEmail });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        // Suspend the user account
+        user.suspended = false;
+        await user.save();
+
+        res.json({
+            success: true,
+            message: `User account for ${userEmail} has been suspended successfully`,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while suspending the user account",
+        });
+    }
+};
+
 const adminAddUser = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
@@ -210,5 +240,5 @@ const adminAddUser = async (req, res) => {
     }
 }
 
-export {loginAdmin, registerAdmin, changePassword, suspendUser, resetPassword, adminAddUser};  
+export {loginAdmin, registerAdmin, changePassword, suspendUser, resetPassword, adminAddUser, reactivateUser};  
 

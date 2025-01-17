@@ -74,7 +74,7 @@ const OrderModal = forwardRef((props, ref) => {
     }
 
     function addQuantity() {
-        if (modalInfo.quantity < modalInfo.stock) {
+        if (modalInfo.quantity < modalInfo.stock || modalInfo.status === "out-of-stock") {
             setModalInfo((prev)=> ({...prev, quantity: prev.quantity + 1}))
         }
     }

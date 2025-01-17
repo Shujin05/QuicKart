@@ -18,7 +18,7 @@ const UserHome = () => {
 
     const [refresh, setRefresh] = useState(true)
 
-    const {token} = useContext(AuthContext)
+    const {token, isAdmin} = useContext(AuthContext)
     const navigate = useNavigate()
     const modalRef = useRef(null);
     const voucherRef = useRef(null)
@@ -33,6 +33,7 @@ const UserHome = () => {
                 return;
             }
             if (!refresh) return;
+            console.log("why is user fetch running here")
             try {
                 // get product list
                 setRefresh(false)
@@ -46,7 +47,8 @@ const UserHome = () => {
                             name: item.name,
                             stock: item.quantity,
                             price: item.voucherAmount,
-                            status: item.status
+                            status: item.status,
+                            imagePath: item.image
                         })
                     }
                     setProducts(newArray);
@@ -64,9 +66,9 @@ const UserHome = () => {
                     for (let item of data) {
                         newArray.push({
                             id: item._id,
-                            item: item.item,
+                            item: item.itemName,
                             date: formatDate(item.createdAt),
-                            quantity: item.quantity,
+                            quantity: item.quantityRequested,
                         })
 
                         counter++;
@@ -99,7 +101,7 @@ const UserHome = () => {
             }
         }
         fetchData();
-    }, [refresh])
+    }, [refresh, token])
 
     function viewAllProducts() {
         navigate("/products")
@@ -184,6 +186,7 @@ const UserHome = () => {
                             id ={product.id}
                             name={product.name}
                             price={product.price}
+                            imagePath={product.imagePath}
                             triggerModal={triggerModal}
                             refresh={refreshPage}/>
                 })}

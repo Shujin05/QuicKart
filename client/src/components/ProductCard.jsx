@@ -17,7 +17,7 @@ const OutOfStock = () => {
 const ProductCard = (props) => {
     return (
         <div className="product-card">
-            <img src="milo.jpg" alt="milo" className={props.status === "out-of-stock" ? "out-of-stock" : "" }></img>
+            <img src={props.imagePath} alt="milo" className={props.status === "out-of-stock" ? "out-of-stock" : "" }></img>
             <div className="product-card-content">
                 <h2>{props.name}</h2>
                 <h3>{props.price} credits</h3>

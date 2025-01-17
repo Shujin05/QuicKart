@@ -24,9 +24,9 @@ const Transaction = () => {
                     for (let item of data) {
                         newArray.push({
                             id: item._id,
-                            item: item.item,
+                            item: item.itemName,
                             date: formatDate(item.createdAt),
-                            quantity: item.quantity,
+                            quantity: item.quantityRequested,
                         })
                     }
                     setOrders(newArray)

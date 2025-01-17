@@ -7,7 +7,7 @@ export const AuthContext = createContext()
 
 export const AuthContextProvider = ({children}) => {
     const [token, setToken] = useState(localStorage.getItem("token") || null)
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(verifyAdmin || false);
 
     const login = async(inputs) => {
         const res = await axios.post("/api/user/login", inputs);
@@ -57,6 +57,18 @@ export const AuthContextProvider = ({children}) => {
             return;
         }
     }, [token])
+
+    function verifyAdmin() {
+        const token = localStorage.getItem("token");
+        if (!token) return false; 
+
+        try {
+            const decoded = jwtDecode(token);
+            return decoded.isAdmin;
+        } catch (err) {
+            return false;
+        }
+    }
 
     return <AuthContext.Provider value={{token, isAdmin, login, loginAdmin, register, logout}}>
         {children}

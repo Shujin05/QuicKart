@@ -1,6 +1,7 @@
 import {useState, useEffect, forwardRef, useImperativeHandle, useRef, useContext} from "react"
 import axios from "axios"
 import {AuthContext} from "../context/AuthContext"
+import useToast from "../hooks/useToast"
 
 const InStock = () => {
     return (
@@ -33,6 +34,8 @@ const OrderModal = forwardRef((props, ref) => {
     const modalRef = useRef(null)
 
     const {token} = useContext(AuthContext);
+
+    const {toastSuccess} = useToast()
 
     useImperativeHandle(ref, ()=>{
         return {
@@ -94,6 +97,7 @@ const OrderModal = forwardRef((props, ref) => {
                     setError(res.data.message)
                     return;
                 } else {
+                    toastSuccess("Order placed successfully!")
                     closeModal()
                     props.refresh()
                 }

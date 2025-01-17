@@ -68,6 +68,8 @@ const UserActionConfirm = forwardRef((props, ref) => {
             suspendUser()
         } else if (modalInfo.type === "reset") {
             resetPassword()
+        } else if (modalInfo.type === "reactivate") {
+            reactivateUser()
         }
     }
 
@@ -80,6 +82,23 @@ const UserActionConfirm = forwardRef((props, ref) => {
             } 
 
             toastSuccess("User has been suspended");
+            closeModal();
+            props.refresh()
+        } catch(err) {
+            console.log(err)
+            setError("something went wrong!")
+        }  
+    }
+
+    const reactivateUser = async() => {
+        try {
+            const res = await axios.post("api/admin/reactivateUser", {userEmail: modalInfo.email}, {headers: {token: token}})
+            if (!res.data.success) {
+                setError(res.data.message)
+                return
+            } 
+
+            toastSuccess("User account has been reactivated");
             closeModal();
             props.refresh()
         } catch(err) {

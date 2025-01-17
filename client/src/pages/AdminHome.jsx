@@ -1,6 +1,7 @@
 import {useEffect, useContext, useState} from "react"
 import axios from "axios"
 import {AuthContext} from "../context/AuthContext"
+import {formatDate} from "../util.js"
 
 const RequestStatus = (props) => {
     return (
@@ -17,6 +18,22 @@ const QuantityStatus = (props) => {
         </div>
     )
 }
+
+const InStock = () => {
+    return (
+        <div className={"order-status order-status-approved"}>
+            <p style={{margin: "0px"}}>In Stock</p>
+        </div>
+    )
+}
+
+const OutOfStock = () => {
+    return (
+        <div className={"order-status order-status-pending"}>
+            <p style={{margin: "0px"}}>Out Of Stock</p>
+        </div>
+    )
+}
     
 function AdminHome(){
     const [orders, setOrders] = useState([])
@@ -24,16 +41,17 @@ function AdminHome(){
     const {token} = useContext(AuthContext)
     useEffect(()=> {
         const fetchData = async() => {
-            const req = await axios.get("api/order/listOrder", {header: {token: token}})
+            const req = await axios.get("api/order/listOrder?limitQuantity=6", {header: {token: token}})
             if (req.data.success) {
                 const data = req.data.data;
                 const newArray = []
                 for (let item of data) {
                     newArray.push({
                         id: item._id,
-                        user: item.userID,
-                        product: item.itemID,
-                        status: item.status
+                        user: item.userName,
+                        product: item.itemName,
+                        status: item.status,
+                        date: formatDate(item.createdAt)
                     })
                 }
                 setOrders (newArray)
@@ -76,7 +94,6 @@ function AdminHome(){
                         <b>Product</b>
                         <b>Price</b>
                         <b>Request Date</b>
-                        <b>Status</b>
                     </div>
                     {orders.map((order)=> {
                         return (
@@ -84,8 +101,7 @@ function AdminHome(){
                                 <b>{order.user}</b>
                                 <b>{order.product}</b>
                                 <b>Price</b>
-                                <b>Request Date</b>
-                                <b>{order.status}</b>
+                                <b>{order.date}</b>
                             </div>
                         )
                     })}
@@ -104,7 +120,6 @@ function AdminHome(){
           <div className="inventory-list">
                     
                     <div className="inventory-item">
-                        <b>ID</b>
                         <b>Name</b>
                         <b>Price</b>
                         <b>Quantity</b>
@@ -113,11 +128,14 @@ function AdminHome(){
                     {inventory.map((item)=> {
                         return (
                             <div key={item.id} className="inventory-item">
-                                <b>{item.id}</b>
                                 <b>{item.name}</b>
                                 <b>{item.price}</b>
                                 <b>{item.quantity}</b>
-                                <b>{item.status}</b>
+                                <div style={{display: "flex"}}>
+                                    {item.status === "in-stock" ?
+                                        <InStock/> :
+                                        <OutOfStock/>}
+                                </div>
                             </div>
                         )
                     })}

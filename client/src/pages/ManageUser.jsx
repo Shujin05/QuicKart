@@ -61,6 +61,13 @@ const ManageUser = () => {
                     message: "You are about to suspend this user. Proceed?",
                     type: type
                 })
+            } else if (type === "reactivate") {
+                modalRef.current.triggerModal({
+                    userID: id,
+                    email: email,
+                    message: "You are about to reactivate this user's account. Proceed?",
+                    type: type
+                })
             }
             
         }
@@ -91,7 +98,7 @@ const ManageUser = () => {
                         <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                             <button onClick={()=>triggerModal(user.id, user.email, "reset")}>Reset Password</button>
                             {user.suspended ? 
-                                <button>Reactivate</button> :
+                                <button onClick={()=>triggerModal(user.id, user.email, "reactivate")}>Reactivate</button> :
                                 <button onClick={()=>triggerModal(user.id, user.email, "suspend")}>Suspend</button>}
                         </div>
                     </div>)

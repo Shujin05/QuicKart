@@ -31,7 +31,8 @@ const Products = () => {
                             name: item.name,
                             stock: item.quantity,
                             price: item.voucherAmount,
-                            status: item.status
+                            status: item.status,
+                            imagePath: item.image
                         })
                     }
                     setProducts(newArray);
@@ -83,6 +84,7 @@ const Products = () => {
                         price={item.price}
                         stock={item.stock}
                         status={item.status}
+                        imagePath={item.imagePath}
                         triggerModal={triggerModal}
                         refresh={refreshPage}/>
                 })}

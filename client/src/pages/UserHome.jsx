@@ -116,7 +116,8 @@ const UserHome = () => {
                     name: product.name,
                     stock: product.stock,
                     price: product.price,
-                    quantity: 1
+                    quantity: 1,
+                    imagePath: product.imagePath
                 });
                 return;
             }

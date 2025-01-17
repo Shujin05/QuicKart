@@ -26,6 +26,7 @@ const Transaction = () => {
                             id: item._id,
                             item: item.itemName,
                             date: formatDate(item.createdAt),
+                            price: item.itemPrice,
                             quantity: item.quantityRequested,
                         })
                     }
@@ -55,7 +56,7 @@ const Transaction = () => {
                             return <div key={order.id} className="transaction-item">
                                 <div><p>{order.item}</p></div>
                                 <div><p>{order.quantity}</p></div>
-                                <div><p>15 credits</p></div>
+                                <div><p>{order.price} credits</p></div>
                                 <div><p>{order.date}</p></div>
                             </div>
                         })}

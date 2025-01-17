@@ -58,7 +58,8 @@ const Products = () => {
                     stock: product.stock,
                     price: product.price,
                     quantity: 1,
-                    status: product.status
+                    status: product.status,
+                    imagePath: product.imagePath
                 });
                 return;
             }

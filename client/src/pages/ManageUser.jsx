@@ -1,4 +1,5 @@
 import {useState, useRef, useEffect, useContext} from "react"
+import {useNavigate} from 'react-router-dom'
 import axios from "axios"
 import UserActionConfirm from "../components/UserActionConfirm"
 import useToast from "../hooks/useToast"
@@ -9,10 +10,23 @@ const ManageUser = () => {
     const [refresh, setRefresh] = useState(true)
 
     const {toastError, toastSuccess} = useToast()
-    const {token} = useContext(AuthContext)
+    const {token, isAdmin} = useContext(AuthContext)
+    const navigate = useNavigate()
 
     useEffect(()=> {
         if (!refresh) return;
+
+        if (!token) {
+            toastError("Log in as admin to access this page")
+            navigate("/login")
+            return
+        }
+
+        if (!isAdmin) {
+            toastError("Log in as admin to access this page")
+            navigate("/")
+            return
+        }
 
         const fetchData = async() => {
             setRefresh(false)

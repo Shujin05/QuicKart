@@ -26,7 +26,8 @@ const OrderModal = forwardRef((props, ref) => {
         stock: 0,
         price: 0,
         quantity: 1,
-        status: "in-stock"
+        status: "in-stock", 
+        imagePath: ""
     })
 
     const [error, setError] = useState("")
@@ -92,29 +93,40 @@ const OrderModal = forwardRef((props, ref) => {
             }
     
             try {
-                const res = await axios.post("api/order/addOrder", data, {headers: {token: token}})
-                if (!res.data.success) {
-                    setError(res.data.message)
-                    return;
+                if (modalInfo.status === "in-stock") {
+                    const res = await axios.post("api/order/addOrder", data, {headers: {token: token}})
+                    if (!res.data.success) {
+                        setError(res.data.message)
+                        return;
+                    } else {
+                        toastSuccess("Order placed successfully!")
+                        closeModal()
+                        props.refresh()
+                    }
                 } else {
-                    toastSuccess("Order placed successfully!")
-                    closeModal()
-                    props.refresh()
+                    const res = await axios.post("api/preorder/addPreorder", data, {headers: {token: token}})
+                    if (!res.data.success) {
+                        setError(res.data.message)
+                        return;
+                    } else {
+                        toastSuccess("Pre-order placed successfully!")
+                        closeModal()
+                        props.refresh()
+                    }
                 }
+                
             } catch(err) {
                 console.log(err)
-                setError(err.response.data.message)
-                
+                setError(err.response.data.message)  
             }
         }
-        postData()
-        
+        postData();
     }
     
     return (
         <div className="modal" ref={modalRef}>
             <div className="modal-content">
-                <img src="/milo.jpg" alt="milo" className={modalInfo.status}></img>
+                <img src={modalInfo.imagePath} alt={modalInfo.name} className={modalInfo.status}></img>
                 <div className="modal-description">
                     <h2>{modalInfo.name}</h2>
                     <p><b>Price: {modalInfo.price} credits</b></p>

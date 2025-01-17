@@ -51,6 +51,8 @@ function AdminHome(){
                         user: item.userName,
                         product: item.itemName,
                         status: item.status,
+                        price: item.itemPrice,
+                        quantity: item.quantityRequested,
                         date: formatDate(item.createdAt)
                     })
                 }
@@ -60,7 +62,6 @@ function AdminHome(){
             const inv = await axios.get("api/item/list", {header: {token: token}})
             if (inv.data.success) {
                 const data = inv.data.data;
-                console.log(data)
                 const newArray1 = []
                 for (let item of data) {
                     newArray1.push({
@@ -102,7 +103,9 @@ function AdminHome(){
                             <div key={order.id} className="request-item">
                                 <b>{order.user}</b>
                                 <b>{order.product}</b>
-                                <b>Price</b>
+                                <b>{order.quantity}</b>
+                                <b>{order.price}</b>
+                                <b>{order.quantity * order.price}</b>
                                 <b>{order.date}</b>
                             </div>
                         )

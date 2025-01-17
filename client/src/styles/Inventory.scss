@@ -19,6 +19,7 @@
     color: constants.$dark-color;
 }
 
+
 .card {
     border-radius: 8px;
     background-color: constants.$primary-color;
@@ -29,7 +30,7 @@
         margin: 0px;
         margin-bottom: 16px;
         padding: 0;
-        font-size: 1.5rem;
+        font-size: 48px;
     }
 }
 
@@ -39,18 +40,25 @@
     justify-content: space-between;
     align-items: end;
     margin-bottom: 8px;
+    
 
     h2 {
         margin: 0;
+
     }
 
     h3 {
         text-decoration: underline;
+
     }
 }
 
 .inventoryList-list {
     grid-template-rows: repeat(6, 1fr);
+    background-color: constants.$primary-color;
+    padding: 16px;
+    text-align: left;
+
 
     .inventoryList-item {
         border-bottom: 1px solid constants.$dark-color;

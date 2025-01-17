@@ -74,9 +74,8 @@ const Inventory = () => {
     }
     return (
         <>
-        <div className="inventoryList-section">
-            <h2>Inventory Summary</h2>
-            <p>Check the current inventory status at a glance.</p>
+        <div style={{textAlign: "left"}}>
+            <h1>Inventory Summary</h1>
             <div id="row2">
                 <div className="inventoryList-list">
 

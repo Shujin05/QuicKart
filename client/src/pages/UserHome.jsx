@@ -16,6 +16,8 @@ const UserHome = () => {
         voucherBalance: 0
     })
 
+    const [refresh, setRefresh] = useState(true)
+
     const {token} = useContext(AuthContext)
     const navigate = useNavigate()
     const modalRef = useRef(null);
@@ -30,7 +32,10 @@ const UserHome = () => {
                 navigate("/login")
                 return;
             }
+            if (!refresh) return;
             try {
+                // get product list
+                setRefresh(false)
                 const res = await axios.get("api/item/list?limitQuantity=4", {headers: {token: token}})
                 if (res.data.success) {
                     const data = res.data.data;
@@ -49,8 +54,9 @@ const UserHome = () => {
                     toastError("Fetch Error: Something went wrong while fetching product data")
                     console.log(res.data.message)
                 }
-
-                const orderRes = await axios.get("api/order/findOrderByUser?limitQuantity=4", {headers: {token: token}})
+                
+                // get user orders
+                const orderRes = await axios.get("api/order/findOrderByUser?limitQuantity=3", {headers: {token: token}})
                 if (orderRes.data.success) {
                     const data = orderRes.data.data;
                     const newArray = [];
@@ -73,7 +79,8 @@ const UserHome = () => {
                     toastError("Fetch Error: Something went wrong while fetching transaction data")
                     console.log(orderRes.data.message)
                 }
-
+                
+                // get user info
                 const userRes = await axios.get("api/user/getUserInfo", {headers: {token: token}});
 
                 if (userRes.data.success) {
@@ -92,7 +99,7 @@ const UserHome = () => {
             }
         }
         fetchData();
-    }, [])
+    }, [refresh])
 
     function viewAllProducts() {
         navigate("/products")
@@ -118,6 +125,10 @@ const UserHome = () => {
         if (voucherRef) {
             voucherRef.current.triggerModal();
         }
+    }
+
+    function refreshPage() {
+        setRefresh(true)
     }
     return (
         <div className="user-home-container">
@@ -173,11 +184,12 @@ const UserHome = () => {
                             id ={product.id}
                             name={product.name}
                             price={product.price}
-                            triggerModal={triggerModal}/>
+                            triggerModal={triggerModal}
+                            refresh={refreshPage}/>
                 })}
             </div>
-            <OrderModal ref={modalRef}/>
-            <AddVoucherPopUp ref={voucherRef}/>
+            <OrderModal ref={modalRef} refresh={refreshPage}/>
+            <AddVoucherPopUp ref={voucherRef} refresh={refreshPage}/>
         </div>
         
         

@@ -95,6 +95,7 @@ const OrderModal = forwardRef((props, ref) => {
                     return;
                 } else {
                     closeModal()
+                    props.refresh()
                 }
             } catch(err) {
                 console.log(err)

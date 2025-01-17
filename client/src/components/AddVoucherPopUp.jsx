@@ -55,9 +55,22 @@ const AddVoucherPopUp = forwardRef((props, ref) => {
                 setError("Invalid voucher code")
                 return
             }
-            //await axios.post("api/user/addVoucher")
-            toastSuccess("Voucher added to balance!")
-            closeModal()
+
+            try {
+                const res = await axios.post("api/user/addVoucher", {voucherAmount: 20}, {headers: {token: token}})
+                if (!res.data.success) {
+                    setError(res.data.message);
+                    return;
+                } else {
+                    toastSuccess("Voucher added to balance")
+                    closeModal();
+                    props.refresh();
+                }
+            } catch(err) {
+                console.log(err)
+                setError(err.response.data.message)
+            }
+            
         }
         postData();
 

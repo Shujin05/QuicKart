@@ -103,7 +103,7 @@ const OrderModal = forwardRef((props, ref) => {
                         closeModal()
                         props.refresh()
                     }
-                } else {
+                } else if (modalInfo.status === "out-of-stock") {
                     const res = await axios.post("api/preorder/addPreorder", data, {headers: {token: token}})
                     if (!res.data.success) {
                         setError(res.data.message)

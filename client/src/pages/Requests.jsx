@@ -44,6 +44,7 @@ const Requests = () => {
             }
             
             try {
+                setRefresh(false)
                 const res = await axios.get("api/order/listOrder", {header: {token: token}})
                 if (res.data.success) {
                     const data = res.data.data;
@@ -63,11 +64,14 @@ const Requests = () => {
                     setRequests(newArray);
 
                     const summarizedOrders = newArray.reduce((summary, order) => {
-                        const existingItem = summary.find(item => item.itemName === order.item);
-                        if (existingItem) {
-                            existingItem.quantity += order.quantity;
-                        } else {
-                            summary.push({ itemName: order.item, quantity: order.quantity });
+                        if (order.status !== "delivered") {
+                            const existingItem = summary.find(item => item.itemName === order.item);
+                            if (existingItem) {
+                                existingItem.quantity += order.quantity;
+                            } else {
+                                summary.push({ itemName: order.item, quantity: order.quantity });
+                            }
+                            
                         }
                         return summary;
                     }, []);
@@ -80,7 +84,7 @@ const Requests = () => {
             
         }
         fetchData()
-    }, [])
+    }, [refresh])
 
     function markAsDelivered(id) {
         const postData = async() => {
@@ -92,7 +96,7 @@ const Requests = () => {
                     return;
                 } else {
                     toastSuccess("Marked as delivered")
-
+                    setRefresh(true)
                 }
             } catch(err) {
                 toastError("Something went wrong!");
@@ -101,6 +105,7 @@ const Requests = () => {
         }
         postData()
     }
+
     return (
         <div className="product-page-container">
             <div className="product-page-header">
@@ -108,10 +113,13 @@ const Requests = () => {
             </div>
             <div className="order-summary">
                 <h2>Pending Order Summary</h2>
-                <div className="table-item header">
-                    <p>Product</p>
-                    <p>Quantity</p>
-                </div>
+                {summary.length > 0 ? 
+                    <div className="table-item header">
+                        <p>Product</p>
+                        <p>Quantity</p>
+                    </div> : 
+                    <h3>No orders to fulfill!</h3>}
+                
                 {summary.map((item) => {
                     return <div key={item.itemName} className="table-item">
                         <p>{item.itemName}</p>
@@ -122,15 +130,18 @@ const Requests = () => {
             
             <div className="requests-table">
                 <h2 style={{margin: "0", marginBottom: "8px"}}>All Orders</h2>
-                <div className="transaction-item transaction-header">
-                    <p>User</p>
-                    <p>Item</p>
-                    <p>Quantity</p>
-                    <p>Price</p>
-                    <p>Total Price</p>
-                    <p>Order created</p>
-                    <p>Action</p>
-                </div>
+                {requests.length > 0 ? 
+                    <div className="transaction-item transaction-header">
+                        <p>User</p>
+                        <p>Item</p>
+                        <p>Quantity</p>
+                        <p>Price</p>
+                        <p>Total Price</p>
+                        <p>Order created</p>
+                        <p>Action</p>
+                    </div> : 
+                    <h3>No orders in database</h3>}
+                
                 {requests.map((request) => {
                     return (
                         <div key={request.id} className="transaction-item">

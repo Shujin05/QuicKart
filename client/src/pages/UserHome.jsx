@@ -8,6 +8,22 @@ import axios from "axios"
 import {formatDate} from "../util.js"
 import useToast from "../hooks/useToast.js"
 
+const Delivered = () => {
+    return (
+        <div className={"order-status order-status-approved"}>
+            <p style={{margin: "0px"}}>Delivered</p>
+        </div>
+    )
+}
+
+const Pending = () => {
+    return (
+        <div className={"order-status order-status-pending"}>
+            <p style={{margin: "0px"}}>Pending</p>
+        </div>
+    )
+}
+
 const UserHome = () => {
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -36,8 +52,9 @@ const UserHome = () => {
             console.log("why is user fetch running here")
             try {
                 // get product list
+                
                 setRefresh(false)
-                const res = await axios.get("api/item/list?limitQuantity=4", {headers: {token: token}})
+                const res = await axios.get("api/item/list?listQuantity=4", {headers: {token: token}})
                 if (res.data.success) {
                     const data = res.data.data;
                     const newArray = [];
@@ -52,13 +69,14 @@ const UserHome = () => {
                         })
                     }
                     setProducts(newArray);
+                    console.log(newArray)
                 } else {
                     toastError("Fetch Error: Something went wrong while fetching product data")
                     console.log(res.data.message)
                 }
                 
                 // get user orders
-                const orderRes = await axios.get("api/order/findOrderByUser?limitQuantity=3", {headers: {token: token}})
+                const orderRes = await axios.get("api/order/findOrderByUser?listQuantity=3", {headers: {token: token}})
                 if (orderRes.data.success) {
                     const data = orderRes.data.data;
                     const newArray = [];
@@ -69,6 +87,7 @@ const UserHome = () => {
                             item: item.itemName,
                             date: formatDate(item.createdAt),
                             quantity: item.quantityRequested,
+                            status: item.status
                         })
 
                         counter++;
@@ -117,7 +136,8 @@ const UserHome = () => {
                     stock: product.stock,
                     price: product.price,
                     quantity: 1,
-                    imagePath: product.imagePath
+                    imagePath: product.imagePath,
+                    status: product.status
                 });
                 return;
             }
@@ -159,6 +179,7 @@ const UserHome = () => {
                                     <b>Quantity</b>
                                     <b>Price</b>
                                     <b>Date</b>
+                                    <b>Status</b>
                                 </div>
                                 {
                                     orders.map((order)=> {
@@ -167,6 +188,11 @@ const UserHome = () => {
                                             <p>{order.quantity}</p>
                                             <p>14 credits</p>
                                             <p>{order.date}</p>
+                                            <div style={{display: "flex"}}>
+                                                {order.status === "delivered" ? 
+                                                    <Delivered/>
+                                                    : <Pending/>}
+                                            </div>
                                         </div>
                                     }) 
                                 }
@@ -188,6 +214,7 @@ const UserHome = () => {
                             name={product.name}
                             price={product.price}
                             imagePath={product.imagePath}
+                            status={product.status}
                             triggerModal={triggerModal}
                             refresh={refreshPage}/>
                 })}

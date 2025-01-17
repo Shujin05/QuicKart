@@ -89,15 +89,16 @@ function AdminHome(){
           <p>View the summary of requests submitted this week.</p>
           <div id="row1">
                 <div className="request-list">
-                    
-                    <div className="request-item">
-                        <b>User</b>
-                        <b>Product</b>
-                        <b>Quantity</b>
-                        <b>Price</b>
-                        <b>Total Price</b>
-                        <b>Request Date</b>
-                    </div>
+                    {orders.length > 0 
+                        ? <div className="request-item">
+                            <b>User</b>
+                            <b>Product</b>
+                            <b>Quantity</b>
+                            <b>Price</b>
+                            <b>Total Price</b>
+                            <b>Request Date</b>
+                        </div> 
+                        : <h2>No orders this week!</h2>}
                     {orders.map((order)=> {
                         return (
                             <div key={order.id} className="request-item">
@@ -111,9 +112,12 @@ function AdminHome(){
                         )
                     })}
                 </div>
-                <div className="admin-request-header">   
-                    <a href="/transactions">{"View All >"}</a>
-                </div>
+                {orders.length > 0 
+                    ? <div className="admin-request-header">   
+                        <a href="/transactions">{"View All >"}</a>
+                    </div> 
+                    : <></>}
+                
             </div>        
         </div>
     

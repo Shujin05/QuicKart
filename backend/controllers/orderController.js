@@ -138,7 +138,14 @@ const findOrderByUser = async (req, res) => {
     }
 
     try {
-        const orders = await orderModel.find({userID: userID}).sort({ createdAt: -1 });
+        let orders; 
+        if (!req.query.listQuantity) {
+            orders = await orderModel.find({userID: userID}).sort({ createdAt: -1 });
+        } else {
+            const listQuantity = req.query.listQuantity;
+            orders = await orderModel.find({userID: userID}).sort({ createdAt: -1 }).limit(listQuantity);
+        }
+       
 
         // Check if orders are found
         if (!orders) {

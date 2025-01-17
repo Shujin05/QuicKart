@@ -5,6 +5,21 @@ import {AuthContext} from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 import useToast from "../hooks/useToast"
 
+const InStock = () => {
+    return (
+        <div className={"order-status order-status-approved"}>
+            <p style={{margin: "0px"}}>In Stock</p>
+        </div>
+    )
+}
+
+const OutOfStock = () => {
+    return (
+        <div className={"order-status order-status-pending"}>
+            <p style={{margin: "0px"}}>Out Of Stock</p>
+        </div>
+    )
+}
 
 const Inventory = () => {
     const modalRef = useRef(null);
@@ -94,7 +109,12 @@ const Inventory = () => {
                                 <b>{item.price}</b>
                                 <b>{item.quantity}</b>
                                 <b>{item.homepageQuantity}</b>
-                                <b>{item.status}</b>
+                                <div style={{display: "flex"}}>
+                                {item.status === "in-stock" 
+                                    ? <InStock/>
+                                    : <OutOfStock/>}
+                                </div>
+                                
                                 <button onClick={()=>triggerModal(item.id)}>
                                     Update Quantity
                                 </button>

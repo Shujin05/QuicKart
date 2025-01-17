@@ -5,6 +5,22 @@ import {AuthContext} from "../context/AuthContext"
 import axios from "axios"
 import {formatDate} from "../util.js"
 
+const Delivered = () => {
+    return (
+        <div className={"order-status order-status-approved"}>
+            <p style={{margin: "0px"}}>Delivered</p>
+        </div>
+    )
+}
+
+const Pending = () => {
+    return (
+        <div className={"order-status order-status-pending"}>
+            <p style={{margin: "0px"}}>Pending</p>
+        </div>
+    )
+}
+
 const Transaction = () => {
     const [orders, setOrders] = useState([])
     const {token} = useContext(AuthContext)
@@ -28,6 +44,7 @@ const Transaction = () => {
                             date: formatDate(item.createdAt),
                             price: item.itemPrice,
                             quantity: item.quantityRequested,
+                            status: item.status
                         })
                     }
                     setOrders(newArray)
@@ -51,6 +68,7 @@ const Transaction = () => {
                             <p>Quantity</p>
                             <p>Price</p>
                             <p>Order created</p>
+                            <p>Status</p>
                         </div>
                         {orders.map((order)=> {
                             return <div key={order.id} className="transaction-item">
@@ -58,6 +76,11 @@ const Transaction = () => {
                                 <div><p>{order.quantity}</p></div>
                                 <div><p>{order.price} credits</p></div>
                                 <div><p>{order.date}</p></div>
+                                <div style={{display: "flex"}}>
+                                    {order.status === "delivered" ? 
+                                        <Delivered/>
+                                        : <Pending/>}
+                                </div>
                             </div>
                         })}
                     </> : <h2>No transactions have been made. Go to <b><u><a href="/products">Products</a></u></b> to start shopping!</h2>}

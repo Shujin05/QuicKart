@@ -164,11 +164,12 @@ const listOrder = async (req, res) => {
         const ordersWithDetails = await Promise.all(
             orders.map(async (order) => {
                 const user = await userModel.findById(order.userID).select("name");
-                const item = await itemModel.findById(order.itemID).select("name");
+                const item = await itemModel.findById(order.itemID).select("name voucherAmount");
                 return {
                     ...order._doc, // Spread order fields
                     userName: user ? user.name : "Unknown User",
                     itemName: item ? item.name : "Unknown Item",
+                    itemPrice: item? item.voucherAmount : "Unknown Price"
                 };
             })
         );
@@ -198,11 +199,12 @@ const findOrderByUser = async (req, res) => {
         const ordersWithDetails = await Promise.all(
             orders.map(async (order) => {
                 const user = await userModel.findById(order.userID).select("name");
-                const item = await itemModel.findById(order.itemID).select("name");
+                const item = await itemModel.findById(order.itemID).select("name voucherAmount");
                 return {
                     ...order._doc, // Spread order fields
                     userName: user ? user.name : "Unknown User",
                     itemName: item ? item.name : "Unknown Item",
+                    itemPrice: item? item.voucherAmount : "Unknown Price"
                 };
             })
         );

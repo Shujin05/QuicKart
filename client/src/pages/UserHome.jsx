@@ -69,7 +69,6 @@ const UserHome = () => {
                         })
                     }
                     setProducts(newArray);
-                    console.log(newArray)
                 } else {
                     toastError("Fetch Error: Something went wrong while fetching product data")
                     console.log(res.data.message)
@@ -87,13 +86,9 @@ const UserHome = () => {
                             item: item.itemName,
                             date: formatDate(item.createdAt),
                             quantity: item.quantityRequested,
-                            status: item.status
+                            status: item.status,
+                            price: item.itemPrice
                         })
-
-                        counter++;
-                        if (counter >= 3) {
-                            break;
-                        }
                     }
                     setOrders(newArray)
                 } else {
@@ -178,6 +173,7 @@ const UserHome = () => {
                                     <b>Item</b>
                                     <b>Quantity</b>
                                     <b>Price</b>
+                                    <b>Total Price</b>
                                     <b>Date</b>
                                     <b>Status</b>
                                 </div>
@@ -186,7 +182,8 @@ const UserHome = () => {
                                         return <div key={order.id} className="transaction-item">
                                             <p>{order.item}</p>
                                             <p>{order.quantity}</p>
-                                            <p>14 credits</p>
+                                            <p>{order.price} credits</p>
+                                            <p>{order.quantity * order.price} credits</p>
                                             <p>{order.date}</p>
                                             <div style={{display: "flex"}}>
                                                 {order.status === "delivered" ? 

@@ -67,6 +67,7 @@ const Transaction = () => {
                             <p>Item</p>
                             <p>Quantity</p>
                             <p>Price</p>
+                            <p>Total Price</p>
                             <p>Order created</p>
                             <p>Status</p>
                         </div>
@@ -75,6 +76,7 @@ const Transaction = () => {
                                 <div><p>{order.item}</p></div>
                                 <div><p>{order.quantity}</p></div>
                                 <div><p>{order.price} credits</p></div>
+                                <div><p>{order.quantity * order.price} credits</p></div>
                                 <div><p>{order.date}</p></div>
                                 <div style={{display: "flex"}}>
                                     {order.status === "delivered" ? 

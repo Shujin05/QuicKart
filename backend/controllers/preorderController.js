@@ -14,7 +14,6 @@ const addPreorder = async (req, res) => {
             quantityRequested
         });
 
-<<<<<<< HEAD
         // Save the preorder to the database
         await newPreorder.save();
 
@@ -32,10 +31,6 @@ const addPreorder = async (req, res) => {
         });
     }
 };
-=======
-    return res.json({success: true, message: "You have placed a preorder request."});
-}
->>>>>>> 8076901e526dc762626fa3bbae4bd18b9792c5db
 
 const listPreorder = async (req, res) => {
     try {

@@ -103,10 +103,10 @@ const listOrder = async (req, res) => {
         let orders;
 
         if (!req.body.listQuantity) {
-            orders = await orderModel.find({});
+            orders = await orderModel.find({}).sort({ createdAt: -1 });
         } else {
             const listQuantity = parseInt(req.body.listQuantity); // Ensure it's a number
-            orders = await orderModel.find({}).limit(listQuantity);
+            orders = await orderModel.find({}).sort({ createdAt: -1 }).limit(listQuantity);
         }
 
         // Map orders and fetch user/item details
@@ -129,6 +129,7 @@ const listOrder = async (req, res) => {
         return res.status(500).json({ success: false, message: "Error fetching orders" });
     }
 }
+
 const findOrderByUser = async (req, res) => {
     const {userID} = req.body;
     // Validate input
@@ -137,7 +138,7 @@ const findOrderByUser = async (req, res) => {
     }
 
     try {
-        const orders = await orderModel.find({userID: userID});
+        const orders = await orderModel.find({userID: userID}).sort({ createdAt: -1 });
 
         // Check if orders are found
         if (!orders) {

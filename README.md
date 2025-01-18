@@ -40,8 +40,7 @@ QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah 
 ## Installation  
 
 ### Prerequisites:  
-- Node.js installed  
-- MongoDB set up locally or in the cloud  
+- Node.js and npm installed    
 
 ### Steps:  
 1. Clone the repository:  

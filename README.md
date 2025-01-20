@@ -49,14 +49,14 @@ QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah 
    cd quickart
    ```
 
-2. Install dependencies:
-   ```bash  
+2. Install backend dependencies:
+   ```bash
+   cd backend
    npm install  
    ```
 
 3. Start backend server
    ```bash
-   cd backend
    npm run start  
    ```
    
@@ -71,10 +71,13 @@ QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah 
    ```bash
    npm install vite  
    ```
+6. Install all frontend dependencies
+   ```bash
+   npm install 
+   ```
 
-6. Run the webpage
+7. Run the webpage
     ```bash
-   cd client
    npm run dev  
    ```
 

@@ -2,6 +2,8 @@
 
 QuicKart is a web-based Minimart and Voucher System designed for **Muhammadiyah Welfare Home**. The platform empowers users to request products and earn vouchers while equipping administrators with robust tools for management and reporting. With a focus on security, usability, and efficient transaction processing. This is our submission for Hack for Good 2025. 
 
+DevPost Link (with Demo video): https://devpost.com/software/quickart
+
 ---
 
 ## Features  

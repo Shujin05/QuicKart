@@ -3,8 +3,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const AddOrder = () => {
-    const url = "http://localhost:4000";
-
     const [image, setImage] = useState(null);
     const [data, setData] = useState({
         name: "",
@@ -42,7 +40,7 @@ const AddOrder = () => {
             formData.append("category", data.category);
             formData.append("image", image);
 
-            const response = await axios.post(`${url}/api/item/add`, formData);
+            const response = await axios.post("/api/item/add", formData);
 
             if (response.data.success) {
                 setData({

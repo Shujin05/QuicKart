@@ -94,7 +94,6 @@ const OrderModal = forwardRef((props, ref) => {
                     <h2>{modalInfo.name}</h2>
                     <p><b>Stock: {modalInfo.stock}</b></p>
                     <p><b>Price: {modalInfo.price} credits</b></p>
-                    <p>Description: Chocolate-flavoured malted powder product produced by Nestlé</p>
                     <div className="quantity-div">
                         <button onClick={decreaseQuantity}><p>-</p></button>
                         <p className="number-text"><b>{modalInfo.quantity}</b></p>

@@ -135,7 +135,6 @@ const OrderModal = forwardRef((props, ref) => {
                         ? <OutOfStock/>
                         : <InStock/>}
                     </div>
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                     <div className="quantity-div">
                         <button onClick={decreaseQuantity}><p>-</p></button>
                         <p className="number-text"><b>{modalInfo.quantity}</b></p>

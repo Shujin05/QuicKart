@@ -21,13 +21,12 @@ const ProductCard = (props) => {
             <div className="product-card-content">
                 <h2>{props.name}</h2>
                 <h3>{props.price} credits</h3>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", marginBottom: "32px"}}>
                 {props.status === "out-of-stock" ?
                     <OutOfStock/> :
                     <InStock/>}
                 </div>
                 
-                <p style={{marginBottom: "32px"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 <button onClick={() => {props.triggerModal(props.id)}}>
                     {
                         props.status === "out-of-stock" 

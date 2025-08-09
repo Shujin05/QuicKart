@@ -4,14 +4,13 @@ import logModel from "../models/logModel.js";
 // add item 
 const addItem = async (req, res) => {
     
-    let image_filename = `${req.file.filename}`
 
     const item = new itemModel({
         name: req.body.name, 
         voucherAmount: req.body.voucherAmount, 
         quantity: req.body.quantity,
         homepageQuantity: req.body.quantity, 
-        image: image_filename, 
+        image: req.body.image, 
     })
     
     try {
